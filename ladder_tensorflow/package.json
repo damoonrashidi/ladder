@@ -1,0 +1,21 @@
+{
+  "name": "ladder_tensorflow",
+  "version": "1.0.0",
+  "description": "create gamepredictions for future games",
+  "main": "index.ts",
+  "repository": "https://github.com/damoonrashidi/ladder",
+  "author": "Damoon Rashidi",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node index.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^10.11.4",
+    "typescript": "^3.1.1"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs": "^0.13.1",
+    "@tensorflow/tfjs-node": "^0.1.18",
+    "@tensorflow/tfjs-node-gpu": "^0.1.18"
+  }
+}
