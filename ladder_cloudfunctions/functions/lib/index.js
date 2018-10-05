@@ -23,6 +23,20 @@ exports.allMatches = functions.https.onRequest((req, res) => __awaiter(this, voi
         res.send(matches);
     });
 }));
+exports.allPeople = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
+    return db
+        .collection('matches')
+        .orderBy('timestamp', 'desc')
+        .get()
+        .then(snapshot => {
+        const people = new Set();
+        snapshot.forEach((match) => {
+            people.add(match.data().winner);
+            people.add(match.data().loser);
+        });
+        res.send([...people].sort((a, b) => a < b ? -1 : 1));
+    });
+}));
 exports.reportMatch = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
     const now = new Date();
     const { winner, loser } = req.body;
