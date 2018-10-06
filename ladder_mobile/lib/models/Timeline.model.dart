@@ -5,7 +5,7 @@ import 'dart:async';
 class Timeline {
   static Future<List<Game>> getFor({String name}) async {
     QuerySnapshot matches = await Firestore.instance
-      .collection('matches')
+      .collection('games')
       .orderBy('timestamp', descending: true)
       .getDocuments();
 

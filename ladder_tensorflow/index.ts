@@ -18,7 +18,7 @@ function fetch<T>(url: string): Promise<T> {
 
 function getGames(): Promise<Game[]> {
   return fetch<Game[]>(
-    'https://us-central1-ladder-41a39.cloudfunctions.net/allMatches'
+    'https://us-central1-ladder-41a39.cloudfunctions.net/matches'
   );
 }
 

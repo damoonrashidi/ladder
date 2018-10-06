@@ -27,7 +27,7 @@ class HomeWidgetState extends State<HomeWidget> {
 
   final Function _onReport = (String name) {
     return () async {
-      await http.post('https://us-central1-ladder-41a39.cloudfunctions.net/reportMatch', body: {
+      await http.post('https://us-central1-ladder-41a39.cloudfunctions.net/reportGame', body: {
         'winner': 'Damoon',
         'loser': name,
       });
