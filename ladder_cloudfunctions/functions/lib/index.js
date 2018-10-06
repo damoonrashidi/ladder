@@ -52,21 +52,22 @@ exports.people = functions.https.onRequest((req, res) => __awaiter(this, void 0,
 exports.person = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
     const name = req.query.name.toLowerCase();
     const ratings = new Map();
+    let consecutiveWins = 0;
     return db
         .collection('games')
-        .orderBy('timestamp', 'desc')
+        .orderBy('timestamp', 'asc')
         .get()
         .then(snapshot => {
         let _games = [];
         snapshot.forEach(game => {
-            const { winner, loser } = game.data();
-            const playerFound = winner.toLowerCase() === name || loser.toLowerCase() === name;
-            let consecutiveWins = 0;
-            if (playerFound) {
-                consecutiveWins =
-                    name === winner.toLowerCase() ? consecutiveWins + 1 : 0;
-                const newRating = exports.rating(ratings.get(winner) || 1500, ratings.get(loser) || 1500)[name === winner.toLowerCase() ? 'winner' : 'loser'];
-                _games = _games.concat(Object.assign({}, game.data(), { rating: newRating, consecutiveWins }));
+            const winner = game.data().winner.toLowerCase();
+            const loser = game.data().loser.toLowerCase();
+            if (winner === name || loser === name) {
+                consecutiveWins = name === winner ? consecutiveWins + 1 : 0;
+                const newRatings = exports.rating(ratings.get(winner) || 1500, ratings.get(loser) || 1500);
+                ratings.set(winner, newRatings.winner);
+                ratings.set(loser, newRatings.loser);
+                _games = _games.concat(Object.assign({}, game.data(), { rating: newRatings[name === winner ? 'winner' : 'loser'], consecutiveWins }));
             }
         });
         res.send(_games);

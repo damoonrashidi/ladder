@@ -54,30 +54,31 @@ export const people = functions.https.onRequest(async (req, res) => {
 export const person = functions.https.onRequest(async (req, res) => {
   const name = req.query.name.toLowerCase();
   const ratings = new Map<String, number>();
+  let consecutiveWins = 0;
   return db
     .collection('games')
-    .orderBy('timestamp', 'desc')
+    .orderBy('timestamp', 'asc')
     .get()
     .then(snapshot => {
       let _games = [];
       snapshot.forEach(game => {
-        const { winner, loser } = game.data();
-        const playerFound =
-          winner.toLowerCase() === name || loser.toLowerCase() === name;
-        let consecutiveWins = 0;
+        const winner = game.data().winner.toLowerCase();
+        const loser = game.data().loser.toLowerCase();
 
-        if (playerFound) {
-          consecutiveWins =
-            name === winner.toLowerCase() ? consecutiveWins + 1 : 0;
+        if (winner === name || loser === name) {
+          consecutiveWins = name === winner ? consecutiveWins + 1 : 0;
 
-          const newRating = rating(
+          const newRatings = rating(
             ratings.get(winner) || 1500,
             ratings.get(loser) || 1500
-          )[name === winner.toLowerCase() ? 'winner' : 'loser'];
+          );
+
+          ratings.set(winner, newRatings.winner);
+          ratings.set(loser, newRatings.loser);
 
           _games = _games.concat({
             ...game.data(),
-            rating: newRating,
+            rating: newRatings[name === winner ? 'winner' : 'loser'],
             consecutiveWins
           });
         }
