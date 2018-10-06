@@ -1,4 +1,4 @@
-import * as tf from '@tensorflow/tfjs';
+import { tensor2d, layers, sequential, util } from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-node-gpu';
 import { get } from 'https';
 import { IncomingMessage } from 'http';
@@ -22,54 +22,39 @@ function getGames(): Promise<Game[]> {
   );
 }
 
-// function getPeople(): Promise<Person[]> {
-//   return fetch<Person[]>(
-//     'https://us-central1-ladder-41a39.cloudfunctions.net/allPeople'
-//   );
-// }
-
-const id = (name: string): number => {
-  const people: string[] = [
-    'Damoon',
-    'Arvid',
-    'Saga',
-    'Mange',
-    'Andreas',
-    'Carolin',
-    'Johannes',
-    'JPK',
-    'ErikS',
-    'ErikH',
-    'Lisa',
-    'Anders',
-    'Freddy',
-  ];
-  return people.indexOf(name) && 0;
-};
+const id = (name: string): number =>
+  parseInt(
+    name
+      .split('')
+      .map(c => Math.floor(c.charCodeAt(0) / 255))
+      .join(''),
+    10
+  );
 
 async function run() {
   const games: Game[] = await getGames();
-  const model = tf.sequential();
-  model.add(tf.layers.dense({ units: 1, inputShape: [2] }));
-  model.compile({
-    loss: 'meanSquaredError',
-    optimizer: 'sgd',
-  });
+  const model = sequential();
+  model.add(layers.dense({ units: 1, inputShape: [2] }));
 
-  tf.util.shuffle(games);
-  const games2d = tf.tensor2d(
+  util.shuffle(games);
+  const games2d = tensor2d(
     games.map(game => [id(game.winner), id(game.loser)]),
     [games.length, 2]
   );
-  const winners2d = tf.tensor2d(games.map(game => id(game.winner)), [
+  const winners2d = tensor2d(games.map(game => id(game.winner)), [
     games.length,
     1,
   ]);
 
-  await model.fit(games2d, winners2d, { epochs: 1000 });
-  // const value = await model.predict(
-  //   tf.tensor2d([id('JPK'), id('Damoon')], [2, 1])
-  // );
+  await model.compile({
+    loss: 'meanSquaredError',
+    optimizer: 'sgd',
+  });
+  await model.fit(games2d, winners2d, { epochs: 100 });
+  const value = await model.predict(
+    tensor2d([id('JPK'), id('Damoon')], [2, 1])
+  );
+  console.log(value);
   await model.save(`file://${process.env.PWD}`);
 }
 
