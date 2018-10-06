@@ -13,8 +13,6 @@ export const rating = (
   const pWinner = 1 / (1 + Math.pow(10, (loser - winner) / 400));
   const pLoser = 1 / (1 + Math.pow(10, (winner - loser) / 400));
 
-  console.log(pWinner, pLoser);
-
   const rWinner = winner + K * (1 - pWinner);
   const rLoser = loser + K * (0 - pLoser);
 
@@ -25,6 +23,9 @@ export const rating = (
 };
 
 export const games = functions.https.onRequest(async (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'GET');
+
   return db
     .collection('games')
     .orderBy('timestamp', 'desc')
@@ -37,21 +38,34 @@ export const games = functions.https.onRequest(async (req, res) => {
 });
 
 export const people = functions.https.onRequest(async (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'GET');
+
   return db
     .collection('games')
     .orderBy('timestamp', 'desc')
     .get()
     .then(snapshot => {
-      const uniques = new Set();
+      const _people = new Map<string, number>();
       snapshot.forEach(match => {
-        uniques.add(match.data().winner);
-        uniques.add(match.data().loser);
+        const { winner, loser } = match.data();
+        const newRatings = rating(
+          _people.get(winner) || 1500,
+          _people.get(loser) || 1500
+        );
+
+        _people.set(winner, newRatings.winner);
+        _people.set(loser, newRatings.loser);
       });
-      res.send([...uniques].sort((a, b) => (a < b ? -1 : 1)));
+
+      res.send([..._people].map(([name, points]) => ({ name, points })));
     });
 });
 
 export const person = functions.https.onRequest(async (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'GET');
+
   const name = req.query.name.toLowerCase();
   const ratings = new Map<String, number>();
   let consecutiveWins = 0;
@@ -89,6 +103,9 @@ export const person = functions.https.onRequest(async (req, res) => {
 });
 
 export const reportGame = functions.https.onRequest(async (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'POST');
+
   const timestamp = new Date();
   const { winner, loser } = req.body;
   return db

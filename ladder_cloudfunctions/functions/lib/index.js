@@ -16,7 +16,6 @@ exports.rating = (winner, loser) => {
     const K = 26;
     const pWinner = 1 / (1 + Math.pow(10, (loser - winner) / 400));
     const pLoser = 1 / (1 + Math.pow(10, (winner - loser) / 400));
-    console.log(pWinner, pLoser);
     const rWinner = winner + K * (1 - pWinner);
     const rLoser = loser + K * (0 - pLoser);
     return {
@@ -25,6 +24,8 @@ exports.rating = (winner, loser) => {
     };
 };
 exports.games = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET');
     return db
         .collection('games')
         .orderBy('timestamp', 'desc')
@@ -36,20 +37,26 @@ exports.games = functions.https.onRequest((req, res) => __awaiter(this, void 0, 
     });
 }));
 exports.people = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET');
     return db
         .collection('games')
         .orderBy('timestamp', 'desc')
         .get()
         .then(snapshot => {
-        const uniques = new Set();
+        const _people = new Map();
         snapshot.forEach(match => {
-            uniques.add(match.data().winner);
-            uniques.add(match.data().loser);
+            const { winner, loser } = match.data();
+            const newRatings = exports.rating(_people.get(winner) || 1500, _people.get(loser) || 1500);
+            _people.set(winner, newRatings.winner);
+            _people.set(loser, newRatings.loser);
         });
-        res.send([...uniques].sort((a, b) => (a < b ? -1 : 1)));
+        res.send([..._people].map(([name, points]) => ({ name, points })));
     });
 }));
 exports.person = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET');
     const name = req.query.name.toLowerCase();
     const ratings = new Map();
     let consecutiveWins = 0;
@@ -74,6 +81,8 @@ exports.person = functions.https.onRequest((req, res) => __awaiter(this, void 0,
     });
 }));
 exports.reportGame = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'POST');
     const timestamp = new Date();
     const { winner, loser } = req.body;
     return db
