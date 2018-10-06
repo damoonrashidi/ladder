@@ -16,46 +16,43 @@ function fetch<T>(url: string): Promise<T> {
   });
 }
 
-function getGames(): Promise<Game[]> {
+function getGames(name: string): Promise<Game[]> {
   return fetch<Game[]>(
-    'https://us-central1-ladder-41a39.cloudfunctions.net/matches'
+    `https://us-central1-ladder-41a39.cloudfunctions.net/person?name=${name}`
   );
 }
 
-const id = (name: string): number =>
-  parseInt(
-    name
-      .split('')
-      .map(c => Math.floor(c.charCodeAt(0) / 255))
-      .join(''),
-    10
-  );
-
 async function run() {
-  const games: Game[] = await getGames();
+  const games: Game[] = await getGames('damoon');
+
+  /**
+   * Set up the model
+   */
   const model = sequential();
-  model.add(layers.dense({ units: 1, inputShape: [2] }));
-
+  model.add(layers.dense({ units: 100, activation: 'relu', inputShape: [1] }));
+  model.add(layers.dense({ units: 1, activation: 'linear', inputShape: [1] }));
+  model.compile({ loss: 'meanSquaredError', optimizer: 'sgd' });
   util.shuffle(games);
-  const games2d = tensor2d(
-    games.map(game => [id(game.winner), id(game.loser)]),
-    [games.length, 2]
-  );
-  const winners2d = tensor2d(games.map(game => id(game.winner)), [
-    games.length,
-    1,
-  ]);
 
-  await model.compile({
-    loss: 'meanSquaredError',
-    optimizer: 'sgd',
-  });
-  await model.fit(games2d, winners2d, { epochs: 100 });
-  const value = await model.predict(
-    tensor2d([id('JPK'), id('Damoon')], [2, 1])
+  /**
+   * set up the data
+   */
+  const timestamps = games.map(
+    game => Date.parse(game.timestamp.split('T')[0]) / 100000001
   );
+  const ratings = games.map(game => game.rating);
+  util.assertNonNull(timestamps);
+  util.assertNonNull(ratings);
+  const ts = tensor2d(timestamps, [timestamps.length, 1]);
+  const rs = tensor2d(ratings, [ratings.length, 1]);
+
+  /**
+   * predict the future
+   */
+  await model.fit(ts, rs, { epochs: 100 });
+  const future = tensor2d([6034080.1], [1, 1]);
+  const value = await model.predict(future);
   console.log(value);
-  await model.save(`file://${process.env.PWD}`);
 }
 
 run();
