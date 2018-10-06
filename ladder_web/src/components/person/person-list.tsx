@@ -1,20 +1,21 @@
 import { Component, State } from '@stencil/core';
+import { css } from 'glamor';
 import { Person } from './person.interface';
 
+const list = css({
+  width: `300px`,
+}).toString();
+
 @Component({
-  tag: 'app-person-list'
+  tag: 'app-person-list',
 })
 export class PersonList {
   @State() people: Person[] = [];
 
   async componentWillLoad() {
-    try {
-      this.people = await (await fetch(
-        'https://us-central1-ladder-41a39.cloudfunctions.net/people'
-      )).json();
-    } catch (e) {
-      console.log(e);
-    }
+    this.people = await (await fetch(
+      'https://us-central1-ladder-41a39.cloudfunctions.net/people'
+    )).json();
   }
 
   toPerson() {
@@ -24,11 +25,6 @@ export class PersonList {
   }
 
   render() {
-    return (
-      <div>
-        <h2>King of Pong</h2>
-        {this.toPerson()}
-      </div>
-    );
+    return <div class={list}>{this.toPerson()}</div>;
   }
 }
