@@ -18,7 +18,7 @@ export const rating = (
 
   return {
     winner: Math.floor(rWinner),
-    loser: Math.floor(rLoser)
+    loser: Math.floor(rLoser),
   };
 };
 
@@ -93,7 +93,7 @@ export const person = functions.https.onRequest(async (req, res) => {
           _games = _games.concat({
             ...game.data(),
             rating: newRatings[name === winner ? 'winner' : 'loser'],
-            consecutiveWins
+            consecutiveWins,
           });
         }
       });
@@ -113,7 +113,7 @@ export const reportGame = functions.https.onRequest(async (req, res) => {
     .add({
       winner,
       loser,
-      timestamp
+      timestamp,
     })
     .then(match => {
       res.redirect(303, match.path.toString());
