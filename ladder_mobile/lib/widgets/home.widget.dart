@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/person.model.dart';
 import './person.widget.dart';
+import './game.widget.dart';
 import './title.widget.dart';
 import '../models/game.model.dart';
 import 'package:http/http.dart' as http;
@@ -14,7 +15,9 @@ class HomeWidget extends StatefulWidget {
 class HomeWidgetState extends State<HomeWidget> {
 
   List<Person> people = [];
+  List<Game> games = [];
   List<PersonWidget> list = [];
+
   final RadialGradient _gradient = const RadialGradient(
     center: const Alignment(0.7, -1.0),
     stops: [0.2, 1.4],
@@ -42,13 +45,13 @@ class HomeWidgetState extends State<HomeWidget> {
 
   _getPeople () {
     Game.getAll().listen((snapshot) {
-      List<Game> matches = snapshot.documents.map((match) => new Game(
-        winner: match['winner'],
-        loser: match['loser'],
-        timestamp: match['timestamp'],
+      this.games = snapshot.documents.map((game) => new Game(
+        winner: game['winner'],
+        loser: game['loser'],
+        timestamp: game['timestamp'],
       )).toList();
       setState(() {
-        this.people = Person.scores({}, matches);
+        this.people = Person.scores({}, games);
         this.people.sort((a, b) => a.points > b.points ? -1 : 1);
         this.list = this.people.map(
           (Person person) => new PersonWidget(person: person, onReport: this._onReport(person.name))
@@ -75,7 +78,27 @@ class HomeWidgetState extends State<HomeWidget> {
       ]),
     );
 
-    Widget second = new Center(child: new Text('Implement global history here'));
+    List<GameWidget> gameList = new List.generate(this.games.length, (int i) {
+      return new GameWidget(
+        game: this.games[i],
+        name: this.games[i].winner,
+      );
+    });
+
+    Widget second = new Container(
+      decoration: new BoxDecoration(
+        gradient: this._gradient,
+      ),
+      child: new Column(children: [
+        new TitleWidget('Games'),
+        new Expanded(
+          child: new Padding(
+            padding: new EdgeInsets.only(left: 24.0, right: 24.0),
+            child: new ListView(children: gameList)
+          )
+        ),
+      ]),
+    );
     List<Widget> widgetList = [first, second];
 
     return new Scaffold(
