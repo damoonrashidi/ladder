@@ -15,7 +15,7 @@ class Game {
 
   static Stream<QuerySnapshot> getAll () {
     return Firestore.instance
-      .collection('matches')
+      .collection('games')
       .orderBy('timestamp', descending: false)
       .snapshots();
   }
