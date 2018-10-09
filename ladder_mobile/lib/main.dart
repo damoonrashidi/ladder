@@ -21,8 +21,7 @@ Route<Null> _getRoute(RouteSettings settings) {
 }
 
 class KingOfPong extends StatelessWidget {
-  // This widget is the root of your application.
-
+  
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -38,4 +37,5 @@ class KingOfPong extends StatelessWidget {
       onGenerateRoute: _getRoute,
     );
   }
+  
 }

@@ -6,6 +6,9 @@ import './title.widget.dart';
 import '../models/game.model.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'dart:async';
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -14,6 +17,10 @@ class HomeWidget extends StatefulWidget {
 
 class HomeWidgetState extends State<HomeWidget> {
 
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  FirebaseUser user;
   List<Person> people = [];
   List<Game> games = [];
   List<PersonWidget> list = [];
@@ -28,17 +35,29 @@ class HomeWidgetState extends State<HomeWidget> {
     ]
   );
 
-  final Function _onReport = (String name) {
+  final Function _onReport = (String winner, String loser) {
     return () async {
       await http.post('https://us-central1-ladder-41a39.cloudfunctions.net/reportGame', body: {
-        'winner': 'Damoon',
-        'loser': name,
+        'winner': winner,
+        'loser': loser,
       });
     };
   };
 
+  Future<FirebaseUser> _handleSignIn() async {
+    GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    FirebaseUser user = await _auth.signInWithGoogle(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    this.user = user;
+    return user;
+  }
+
   @override
   initState() {
+    _handleSignIn();
     _getPeople();
     super.initState();
   }
@@ -54,7 +73,7 @@ class HomeWidgetState extends State<HomeWidget> {
         this.people = Person.scores({}, games);
         this.people.sort((a, b) => a.points > b.points ? -1 : 1);
         this.list = this.people.map(
-          (Person person) => new PersonWidget(person: person, onReport: this._onReport(person.name))
+          (Person person) => new PersonWidget(person: person, onReport: this._onReport(this.user.displayName, person.name))
         ).toList();
         this.gameList = new List.generate(this.games.length, (int i) {
           return new GameWidget(
@@ -90,7 +109,6 @@ class HomeWidgetState extends State<HomeWidget> {
     );
   }
 }
-
 
 class TopListWidget extends StatelessWidget {
 
