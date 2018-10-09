@@ -17,7 +17,7 @@ class HomeWidgetState extends State<HomeWidget> {
   List<Person> people = [];
   List<Game> games = [];
   List<PersonWidget> list = [];
-
+  List<GameWidget> gameList = [];
   final RadialGradient _gradient = const RadialGradient(
     center: const Alignment(0.7, -1.0),
     stops: [0.2, 1.4],
@@ -56,6 +56,12 @@ class HomeWidgetState extends State<HomeWidget> {
         this.list = this.people.map(
           (Person person) => new PersonWidget(person: person, onReport: this._onReport(person.name))
         ).toList();
+        this.gameList = new List.generate(this.games.length, (int i) {
+          return new GameWidget(
+            game: this.games[i],
+            name: 'Damoon',
+          );
+        });
       });
     });
   }
@@ -63,42 +69,17 @@ class HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext ctx) {
 
-    Widget first = new Container(
-      decoration: new BoxDecoration(
-        gradient: this._gradient,
-      ),
-      child: new Column(children: [
-        new TitleWidget('The King of Pong'),
-        new Expanded(
-          child: new Padding(
-            padding: new EdgeInsets.only(left: 24.0, right: 24.0),
-            child: new ListView(children: list)
-          )
-        ),
-      ]),
+    TopListWidget first = new TopListWidget(
+      title: 'King of Pong',
+      list: this.list,
+      gradient: this._gradient
+    );
+    TopListWidget second = new TopListWidget(
+      title: 'Games',
+      list: this.gameList,
+      gradient: this._gradient,
     );
 
-    List<GameWidget> gameList = new List.generate(this.games.length, (int i) {
-      return new GameWidget(
-        game: this.games[i],
-        name: this.games[i].winner,
-      );
-    });
-
-    Widget second = new Container(
-      decoration: new BoxDecoration(
-        gradient: this._gradient,
-      ),
-      child: new Column(children: [
-        new TitleWidget('Games'),
-        new Expanded(
-          child: new Padding(
-            padding: new EdgeInsets.only(left: 24.0, right: 24.0),
-            child: new ListView(children: gameList)
-          )
-        ),
-      ]),
-    );
     List<Widget> widgetList = [first, second];
 
     return new Scaffold(
@@ -106,6 +87,34 @@ class HomeWidgetState extends State<HomeWidget> {
         itemCount: widgetList.length,
         itemBuilder: (BuildContext context, int i) => widgetList[i],
       )
+    );
+  }
+}
+
+
+class TopListWidget extends StatelessWidget {
+
+  final String title;
+  final List<Widget> list;
+  final RadialGradient gradient;
+
+  TopListWidget({this.title, this.list, this.gradient});
+
+  @override
+  Widget build (BuildContext ctx) {
+    return new Container(
+      decoration: new BoxDecoration(
+        gradient: this.gradient,
+      ),
+      child: new Column(children: [
+        new TitleWidget(this.title),
+        new Expanded(
+          child: new Padding(
+            padding: new EdgeInsets.only(left: 24.0, right: 24.0),
+            child: new ListView(children: this.list)
+          )
+        ),
+      ]),
     );
   }
 }
