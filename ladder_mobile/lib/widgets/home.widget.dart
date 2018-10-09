@@ -73,11 +73,7 @@ class HomeWidgetState extends State<HomeWidget> {
         this.people = Person.scores({}, games);
         this.people.sort((a, b) => a.points > b.points ? -1 : 1);
         this.list = this.people.map(
-<<<<<<< HEAD
           (Person person) => new PersonWidget(person: person, onReport: this._onReport(this.user.displayName, person.name))
-=======
-          (Person person) => new PersonWidget(person: person, onReport: this._onReport(this.user.displayName, name))
->>>>>>> 98f207de662f0457796e1396952b3223590867b6
         ).toList();
         this.gameList = new List.generate(this.games.length, (int i) {
           return new GameWidget(
