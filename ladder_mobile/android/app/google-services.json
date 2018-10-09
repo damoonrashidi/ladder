@@ -15,14 +15,19 @@
       },
       "oauth_client": [
         {
+          "client_id": "838687234192-34dtsvdf08mup2tn0es63c8r8qkkkha1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.damoonrashidi.ladder",
+            "certificate_hash": "b0daec4720638a3d08f173152f905e920a94e1ca"
+          }
+        },
+        {
           "client_id": "838687234192-qump7vvccvv5ijl5nhvousac47ptk5fg.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
-        {
-          "current_key": "AIzaSyA7McAadfZ-MzMF9qUs0y88hANeBKu4Vxk"
-        },
         {
           "current_key": "AIzaSyA7McAadfZ-MzMF9qUs0y88hANeBKu4Vxk"
         }
@@ -32,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "838687234192-qump7vvccvv5ijl5nhvousac47ptk5fg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
