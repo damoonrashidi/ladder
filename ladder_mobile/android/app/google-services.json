@@ -15,8 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id":
-            "838687234192-34dtsvdf08mup2tn0es63c8r8qkkkha1.apps.googleusercontent.com",
+          "client_id": "838687234192-2sbsgu6thdin0441o6bcrg02ael3chpn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.damoonrashidi.ladder",
@@ -24,8 +23,7 @@
           }
         },
         {
-          "client_id":
-            "838687234192-qump7vvccvv5ijl5nhvousac47ptk5fg.apps.googleusercontent.com",
+          "client_id": "838687234192-qump7vvccvv5ijl5nhvousac47ptk5fg.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -42,8 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id":
-                "838687234192-qump7vvccvv5ijl5nhvousac47ptk5fg.apps.googleusercontent.com",
+              "client_id": "838687234192-qump7vvccvv5ijl5nhvousac47ptk5fg.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
