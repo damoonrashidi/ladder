@@ -19,7 +19,7 @@ export class PersonList {
   }
 
   toPerson() {
-    return this.people.map(person => (
+    return this.people.sort((a,b) => b.points - a.points).map(person => (
       <app-person name={person.name} points={person.points} />
     ));
   }
