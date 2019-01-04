@@ -1,5 +1,5 @@
 {
-  "name": "ladder_cli",
+  "name": "@kop/cli",
   "version": "1.0.0",
   "description": "CLI tool for King of Pong",
   "main": "src/index.js",
