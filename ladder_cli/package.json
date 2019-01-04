@@ -1,0 +1,15 @@
+{
+  "name": "ladder_cli",
+  "version": "1.0.0",
+  "description": "CLI tool for King of Pong",
+  "main": "src/index.js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "colors": "^1.3.3",
+    "commander": "^2.19.0",
+    "inquirer": "^6.2.1",
+    "inquirer-autocomplete-prompt": "^1.0.1"
+  }
+}
