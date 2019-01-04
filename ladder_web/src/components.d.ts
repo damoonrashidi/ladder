@@ -16,6 +16,15 @@ export namespace Components {
   interface AppRoot {}
   interface AppRootAttributes extends StencilHTMLAttributes {}
 
+  interface AppAvatar {
+    'points': number;
+    'user': string;
+  }
+  interface AppAvatarAttributes extends StencilHTMLAttributes {
+    'points'?: number;
+    'user'?: string;
+  }
+
   interface AppHistoryList {}
   interface AppHistoryListAttributes extends StencilHTMLAttributes {}
 
@@ -25,16 +34,19 @@ export namespace Components {
   interface AppPerson {
     'name': string;
     'points': number;
+    'user': string;
   }
   interface AppPersonAttributes extends StencilHTMLAttributes {
     'name'?: string;
     'points'?: number;
+    'user'?: string;
   }
 }
 
 declare global {
   interface StencilElementInterfaces {
     'AppRoot': Components.AppRoot;
+    'AppAvatar': Components.AppAvatar;
     'AppHistoryList': Components.AppHistoryList;
     'AppPersonList': Components.AppPersonList;
     'AppPerson': Components.AppPerson;
@@ -42,6 +54,7 @@ declare global {
 
   interface StencilIntrinsicElements {
     'app-root': Components.AppRootAttributes;
+    'app-avatar': Components.AppAvatarAttributes;
     'app-history-list': Components.AppHistoryListAttributes;
     'app-person-list': Components.AppPersonListAttributes;
     'app-person': Components.AppPersonAttributes;
@@ -52,6 +65,12 @@ declare global {
   var HTMLAppRootElement: {
     prototype: HTMLAppRootElement;
     new (): HTMLAppRootElement;
+  };
+
+  interface HTMLAppAvatarElement extends Components.AppAvatar, HTMLStencilElement {}
+  var HTMLAppAvatarElement: {
+    prototype: HTMLAppAvatarElement;
+    new (): HTMLAppAvatarElement;
   };
 
   interface HTMLAppHistoryListElement extends Components.AppHistoryList, HTMLStencilElement {}
@@ -74,6 +93,7 @@ declare global {
 
   interface HTMLElementTagNameMap {
     'app-root': HTMLAppRootElement
+    'app-avatar': HTMLAppAvatarElement
     'app-history-list': HTMLAppHistoryListElement
     'app-person-list': HTMLAppPersonListElement
     'app-person': HTMLAppPersonElement
@@ -81,6 +101,7 @@ declare global {
 
   interface ElementTagNameMap {
     'app-root': HTMLAppRootElement;
+    'app-avatar': HTMLAppAvatarElement;
     'app-history-list': HTMLAppHistoryListElement;
     'app-person-list': HTMLAppPersonListElement;
     'app-person': HTMLAppPersonElement;

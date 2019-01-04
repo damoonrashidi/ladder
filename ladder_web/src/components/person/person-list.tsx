@@ -21,7 +21,9 @@ export class PersonListComponent {
   toPerson() {
     return this.people
       .sort((a, b) => b.points - a.points)
-      .map(person => <app-person name={person.name} points={person.points} />);
+      .map(person => (
+        <app-person name={person.name} points={person.points} user={'Damoon'} />
+      ));
   }
 
   render() {

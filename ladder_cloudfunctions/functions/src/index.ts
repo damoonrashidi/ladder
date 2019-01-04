@@ -108,6 +108,8 @@ export const reportGame = functions.https.onRequest(async (req, res) => {
 
   const timestamp = new Date();
   const { winner, loser } = req.body;
+
+  console.log(req.body, winner, loser);
   return db
     .collection('games')
     .add({
