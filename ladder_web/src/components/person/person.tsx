@@ -20,11 +20,19 @@ export class PersonComponent {
   @Prop() name: string;
   @Prop() points: number;
 
+  gotBeat() {
+    fetch('https://us-central1-ladder-41a39.cloudfunctions.net/reportGame', {
+      method: 'POST',
+      body: JSON.stringify({ winner: 'Damoon', loser: this.name }),
+    });
+  }
+
   render() {
     return (
       <div class={style}>
         <span>{this.name}</span>
         <span class={numberStyle}>{this.points}</span>
+        <button onClick={() => this.gotBeat()}>Gottem!</button>
       </div>
     );
   }
