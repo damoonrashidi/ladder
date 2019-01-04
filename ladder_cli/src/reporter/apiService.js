@@ -1,11 +1,11 @@
-const axios = require("axios");
-const cachios = require("cachios");
+const axios = require('axios');
+const cachios = require('cachios');
 
 module.exports = {
   getPeople(exclude, filter = undefined) {
     return cachios
-      .get("https://us-central1-ladder-41a39.cloudfunctions.net/people", {
-        ttl: 300
+      .get('https://us-central1-ladder-41a39.cloudfunctions.net/people', {
+        ttl: 300,
       })
       .then(response => {
         return response.data
@@ -21,16 +21,24 @@ module.exports = {
       });
   },
 
+  getRankings() {
+    return cachios
+      .get('https://us-central1-ladder-41a39.cloudfunctions.net/people', {
+        ttl: 300,
+      })
+      .then(response => response.data.sort((a, b) => b.points - a.points));
+  },
+
   reportGame(answers) {
     const loser =
       answers.winner === answers.name ? answers.opponent : answers.name;
 
     return axios.post(
-      "https://us-central1-ladder-41a39.cloudfunctions.net/reportGame",
+      'https://us-central1-ladder-41a39.cloudfunctions.net/reportGame',
       {
         winner: answers.winner,
-        loser
+        loser,
       }
     );
-  }
+  },
 };
