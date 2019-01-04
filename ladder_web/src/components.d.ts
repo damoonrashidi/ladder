@@ -16,6 +16,9 @@ export namespace Components {
   interface AppRoot {}
   interface AppRootAttributes extends StencilHTMLAttributes {}
 
+  interface AppHistoryList {}
+  interface AppHistoryListAttributes extends StencilHTMLAttributes {}
+
   interface AppPersonList {}
   interface AppPersonListAttributes extends StencilHTMLAttributes {}
 
@@ -32,12 +35,14 @@ export namespace Components {
 declare global {
   interface StencilElementInterfaces {
     'AppRoot': Components.AppRoot;
+    'AppHistoryList': Components.AppHistoryList;
     'AppPersonList': Components.AppPersonList;
     'AppPerson': Components.AppPerson;
   }
 
   interface StencilIntrinsicElements {
     'app-root': Components.AppRootAttributes;
+    'app-history-list': Components.AppHistoryListAttributes;
     'app-person-list': Components.AppPersonListAttributes;
     'app-person': Components.AppPersonAttributes;
   }
@@ -47,6 +52,12 @@ declare global {
   var HTMLAppRootElement: {
     prototype: HTMLAppRootElement;
     new (): HTMLAppRootElement;
+  };
+
+  interface HTMLAppHistoryListElement extends Components.AppHistoryList, HTMLStencilElement {}
+  var HTMLAppHistoryListElement: {
+    prototype: HTMLAppHistoryListElement;
+    new (): HTMLAppHistoryListElement;
   };
 
   interface HTMLAppPersonListElement extends Components.AppPersonList, HTMLStencilElement {}
@@ -63,12 +74,14 @@ declare global {
 
   interface HTMLElementTagNameMap {
     'app-root': HTMLAppRootElement
+    'app-history-list': HTMLAppHistoryListElement
     'app-person-list': HTMLAppPersonListElement
     'app-person': HTMLAppPersonElement
   }
 
   interface ElementTagNameMap {
     'app-root': HTMLAppRootElement;
+    'app-history-list': HTMLAppHistoryListElement;
     'app-person-list': HTMLAppPersonListElement;
     'app-person': HTMLAppPersonElement;
   }

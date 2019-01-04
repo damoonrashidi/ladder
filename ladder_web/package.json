@@ -5,19 +5,17 @@
   "author": "Ionic Team",
   "description": "Ionic PWA Toolkit",
   "license": "MIT",
-  "files": [
-    "dist/"
-  ],
+  "files": ["dist/"],
   "scripts": {
     "build": "stencil build",
     "build:deploy": "stencil build && firebase deploy",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
-    "test.watch": "stencil test --spec --e2e --watch"
+    "test:watch": "stencil test --spec --e2e --watch"
   },
   "dependencies": {
-    "@ionic/core": "4.0.0-beta.12",
-    "@stencil/core": "0.13.2",
+    "@ionic/core": "4.0.0-rc.0",
+    "@stencil/core": "0.16.1",
     "glamor": "^2.20.40"
   },
   "devDependencies": {

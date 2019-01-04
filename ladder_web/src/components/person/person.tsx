@@ -7,7 +7,7 @@ const style = css({
   justifyContent: `space-between`,
   alignItems: `center`,
   padding: `10px 0`,
-});
+}).toString();
 
 const numberStyle = css({
   fontFamily: 'Montserrat',
@@ -22,7 +22,7 @@ export class PersonComponent {
 
   render() {
     return (
-      <div class={`${style}`}>
+      <div class={style}>
         <span>{this.name}</span>
         <span class={numberStyle}>{this.points}</span>
       </div>

@@ -1,20 +1,20 @@
-import { Component, State } from "@stencil/core";
-import { css } from "glamor";
-import { Person } from "./person.interface";
+import { Component, State } from '@stencil/core';
+import { css } from 'glamor';
+import { Person } from './person.interface';
 
 const list = css({
-  width: `300px`
+  width: `300px`,
 }).toString();
 
 @Component({
-  tag: "app-person-list"
+  tag: 'app-person-list',
 })
-export class PersonList {
+export class PersonListComponent {
   @State() people: Person[] = [];
 
   async componentWillLoad() {
     this.people = await (await fetch(
-      "https://us-central1-ladder-41a39.cloudfunctions.net/people"
+      'https://us-central1-ladder-41a39.cloudfunctions.net/people'
     )).json();
   }
 
