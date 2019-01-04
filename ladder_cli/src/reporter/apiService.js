@@ -1,9 +1,12 @@
 const axios = require("axios");
+const cachios = require("cachios");
 
 module.exports = {
   getPeople(exclude, filter = undefined) {
-    return axios
-      .get("https://us-central1-ladder-41a39.cloudfunctions.net/people")
+    return cachios
+      .get("https://us-central1-ladder-41a39.cloudfunctions.net/people", {
+        ttl: 300
+      })
       .then(response => {
         return response.data
           .filter(person => person.name !== exclude)
