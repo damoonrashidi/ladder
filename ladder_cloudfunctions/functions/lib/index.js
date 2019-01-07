@@ -13,7 +13,7 @@ const admin = require("firebase-admin");
 admin.initializeApp();
 const db = admin.firestore();
 exports.rating = (winner, loser) => {
-    const K = 32;
+    const K = 24;
     const pWinner = 1 / (1 + Math.pow(10, (loser - winner) / 400));
     const pLoser = 1 / (1 + Math.pow(10, (winner - loser) / 400));
     const rWinner = winner + K * (1 - pWinner);

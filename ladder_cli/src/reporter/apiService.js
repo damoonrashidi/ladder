@@ -39,8 +39,8 @@ module.exports = {
           game =>
             `${new Date(Date.parse(game.timestamp))
               .toISOString()
-              .substr(0, 11)
-              .replace('T', '')} - ${game.winner} beat ${game.loser}`
+              .substr(0, 19)
+              .replace('T', ' ')} - ${game.winner} beat ${game.loser}`
         )
       );
   },
