@@ -7,8 +7,8 @@ module.exports = {
       .get('https://us-central1-ladder-41a39.cloudfunctions.net/people', {
         ttl: 300,
       })
-      .then(response => {
-        return response.data
+      .then(response =>
+        response.data
           .filter(person => person.name !== exclude)
           .filter(person => {
             if (filter === undefined) {
@@ -17,8 +17,8 @@ module.exports = {
 
             return person.name.toLowerCase().includes(filter.toLowerCase());
           })
-          .map(person => person.name);
-      });
+          .map(person => person.name)
+      );
   },
 
   getRankings() {
@@ -27,6 +27,22 @@ module.exports = {
         ttl: 300,
       })
       .then(response => response.data.sort((a, b) => b.points - a.points));
+  },
+
+  getHistory() {
+    return cachios
+      .get('https://us-central1-ladder-41a39.cloudfunctions.net/games', {
+        ttl: 300,
+      })
+      .then(response =>
+        response.data.sort((a, b) => b.timestamp - a.timestamp).map(
+          game =>
+            `${new Date(Date.parse(game.timestamp))
+              .toISOString()
+              .substr(0, 11)
+              .replace('T', '')} - ${game.winner} beat ${game.loser}`
+        )
+      );
   },
 
   reportGame(answers) {

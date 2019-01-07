@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const program = require('commander');
-const colors = require('colors');
+const colors = require('colors/safe');
 
 const apiService = require('./reporter/apiService');
 
@@ -25,8 +25,17 @@ program
   .command('rankings')
   .description('Show current rankings of players')
   .action(async () => {
-    const ranks = await apiService.getRankings();
-    console.log(ranks);
+    (await apiService.getRankings())
+      .map(person => `${person.points} ${person.name}`)
+      .forEach(person => console.log(person));
+  });
+
+program
+  .command('matches')
+  .description('Show log of all matches')
+  .action(async () => {
+    const games = await apiService.getHistory();
+    games.forEach(game => console.log(game));
   });
 
 // Give the arguments to commander

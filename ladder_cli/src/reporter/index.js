@@ -1,18 +1,18 @@
-const inquirer = require("inquirer");
-const colors = require("colors");
+const inquirer = require('inquirer');
+const colors = require('colors');
 
 inquirer.registerPrompt(
-  "autocomplete",
-  require("inquirer-autocomplete-prompt")
+  'autocomplete',
+  require('inquirer-autocomplete-prompt')
 );
 
-const apiService = require("./apiService");
+const apiService = require('./apiService');
 
 function getQuestions(settings) {
   const questions = [
     {
-      type: "input",
-      name: "name",
+      type: 'input',
+      name: 'name',
       message: "What's your name?",
       default: () => {
         if (settings.name !== null) {
@@ -20,25 +20,25 @@ function getQuestions(settings) {
         } else {
           return null;
         }
-      }
+      },
     },
     {
-      type: "autocomplete",
-      name: "opponent",
-      message: "Who did you play?",
+      type: 'autocomplete',
+      name: 'opponent',
+      message: 'Who did you play?',
       suggestOnly: true,
       source: (answersSoFar, input) => {
         return apiService.getPeople(answersSoFar.name, input);
-      }
+      },
     },
     {
-      type: "list",
-      name: "winner",
-      message: "Who won the match?",
+      type: 'list',
+      name: 'winner',
+      message: 'Who won the match?',
       choices: answersSoFar => {
         return [answersSoFar.name, answersSoFar.opponent];
-      }
-    }
+      },
+    },
   ];
 
   return questions;
@@ -51,14 +51,14 @@ class Reporter {
 
   handleAnswers(answers) {
     // Update the name (in case it changed)
-    this.settingsManager.set("name", answers.name);
+    this.settingsManager.set('name', answers.name);
 
     // Report the game
     apiService
       .reportGame(answers)
       .then(() => {
-        console.log("");
-        console.log(colors.green("## Scores reported! Thank joo!"));
+        console.log('');
+        console.log(colors.green('## Scores reported! Thank joo!'));
       })
       .catch(err => {
         console.error(err);
