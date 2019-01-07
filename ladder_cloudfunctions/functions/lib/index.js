@@ -13,14 +13,14 @@ const admin = require("firebase-admin");
 admin.initializeApp();
 const db = admin.firestore();
 exports.rating = (winner, loser) => {
-    const K = 26;
+    const K = 32;
     const pWinner = 1 / (1 + Math.pow(10, (loser - winner) / 400));
     const pLoser = 1 / (1 + Math.pow(10, (winner - loser) / 400));
     const rWinner = winner + K * (1 - pWinner);
     const rLoser = loser + K * (0 - pLoser);
     return {
         winner: Math.floor(rWinner),
-        loser: Math.floor(rLoser)
+        loser: Math.floor(rLoser),
     };
 };
 exports.games = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -85,12 +85,13 @@ exports.reportGame = functions.https.onRequest((req, res) => __awaiter(this, voi
     res.set('Access-Control-Allow-Methods', 'POST');
     const timestamp = new Date();
     const { winner, loser } = req.body;
+    console.log(req.body, winner, loser);
     return db
         .collection('games')
         .add({
         winner,
         loser,
-        timestamp
+        timestamp,
     })
         .then(match => {
         res.redirect(303, match.path.toString());
