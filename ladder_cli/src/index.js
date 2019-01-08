@@ -52,7 +52,7 @@ program
       `${colors.green(wins)} wins, ${colors.red(games.length - wins)} losses`
     );
     games.forEach(game => {
-      if (game.winner === name) {
+      if (game.winner.toLowerCase() === name.toLowerCase()) {
         console.log(
           colors.green('Victory'),
           'vs ',
