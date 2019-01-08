@@ -3,14 +3,29 @@
 const program = require('commander');
 const colors = require('colors/safe');
 const asciichart = require('asciichart');
-const apiService = require('./reporter/apiService');
+const cachios = require('cachios');
 
+const manifest = require('../package.json');
+const apiService = require('./reporter/apiService');
 const Settings = require('./settings');
 const Reporter = require('./reporter');
 
 // Initialize settings module, that we can use for storing settings
 const settingsManager = new Settings();
 settingsManager.initialize();
+
+const checkForUpdates = async () => {
+  const remoteManifest = await cachios.get(
+    'https://raw.githubusercontent.com/damoonrashidi/ladder/master/ladder_cli/package.json'
+  );
+  const latestVersion = remoteManifest.data.version;
+  const thisVersion = manifest.version;
+  console.log(latestVersion, thisVersion);
+  if (latestVersion !== thisVersion) {
+    console.log('There is a new version available!');
+    console.log(`Run 'npm i -g kingofpong@latest' to get it`);
+  }
+};
 
 // Available commands
 program
@@ -28,6 +43,8 @@ program
     (await apiService.getRankings())
       .map(person => `${person.points} ${person.name}`)
       .forEach(person => console.log(person));
+
+    checkForUpdates();
   });
 
 program
