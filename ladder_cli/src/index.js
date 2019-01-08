@@ -20,10 +20,11 @@ const checkForUpdates = async () => {
   );
   const latestVersion = remoteManifest.data.version;
   const thisVersion = manifest.version;
-  console.log(latestVersion, thisVersion);
   if (latestVersion !== thisVersion) {
     console.log(
-      `There is a new version available! (${thisVersion} -> ${latestVersion})`
+      `\nThere is a new version available! (${colors.red(
+        thisVersion
+      )} -> ${colors.green(latestVersion)})`
     );
     console.log(`Run 'npm i -g kingofpong@latest' to get it`);
   }
@@ -36,6 +37,7 @@ program
   .action(() => {
     const reporter = new Reporter(settingsManager);
     reporter.run();
+    checkForUpdates();
   });
 
 program
@@ -70,6 +72,7 @@ program
   .action(async () => {
     const games = await apiService.getHistory();
     games.forEach(game => console.log(game));
+    checkForUpdates();
   });
 
 program
@@ -107,17 +110,20 @@ program
       rating = game.rating;
     });
     console.log('Rating:', rating);
+    checkForUpdates();
   });
 
 // Give the arguments to commander
 program.parse(process.argv);
 
 if (!process.argv.slice(2).length) {
-  console.log(colors.blue('###############################################'));
-  console.log(colors.blue('##                                           ##'));
-  console.log(colors.blue('##        Welcome to King of Pong CLI        ##'));
-  console.log(colors.blue('##                                           ##'));
-  console.log(colors.blue('###############################################'));
-  console.log('');
+  const title = `
+##########################
+##                                            ##
+##        Welcome to King of Pong CLI        ##
+##                                            ##
+##########################`.replace(/#/g, '🏓');
+  console.log(title);
   program.help();
+  checkForUpdates();
 }
