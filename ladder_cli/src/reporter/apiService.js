@@ -29,6 +29,17 @@ module.exports = {
       .then(response => response.data.sort((a, b) => b.points - a.points));
   },
 
+  getProfile(name) {
+    return cachios
+      .get(
+        `https://us-central1-ladder-41a39.cloudfunctions.net/person?name=${name}`,
+        {
+          ttl: 300,
+        }
+      )
+      .then(res => res.data);
+  },
+
   getHistory() {
     return cachios
       .get('https://us-central1-ladder-41a39.cloudfunctions.net/games', {
