@@ -42,6 +42,7 @@ program
   .command('profile <name>')
   .description('Show the results for a single person')
   .action(async name => {
+    let rating = 1500;
     const games = await apiService.getProfile(name);
     const data = [1500, ...games.map(game => game.rating)];
     console.log(asciichart.plot(data, { height: 10 }));
@@ -52,11 +53,23 @@ program
     );
     games.forEach(game => {
       if (game.winner === name) {
-        console.log(colors.green('Victory'), 'vs ', game.loser);
+        console.log(
+          colors.green('Victory'),
+          'vs ',
+          game.loser,
+          `(+${game.rating - rating})`
+        );
       } else {
-        console.log(colors.red('Defeat'), 'vs ', game.winner);
+        console.log(
+          colors.red('Defeat'),
+          'vs ',
+          game.winner,
+          `(${game.rating - rating})`
+        );
       }
+      rating = game.rating;
     });
+    console.log('Rating:', rating);
   });
 
 // Give the arguments to commander
