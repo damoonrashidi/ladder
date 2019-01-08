@@ -46,13 +46,15 @@ module.exports = {
         ttl: 300,
       })
       .then(response =>
-        response.data.sort((a, b) => b.timestamp - a.timestamp).map(
-          game =>
-            `${new Date(Date.parse(game.timestamp))
-              .toISOString()
-              .substr(0, 19)
-              .replace('T', ' ')} - ${game.winner} beat ${game.loser}`
-        )
+        response.data
+          .sort((a, b) => Date.parse(b.timestamp) - Date.parse(a.timestamp))
+          .map(
+            game =>
+              `${new Date(Date.parse(game.timestamp))
+                .toISOString()
+                .substr(0, 19)
+                .replace('T', ' ')} - ${game.winner} beat ${game.loser}`
+          )
       );
   },
 
