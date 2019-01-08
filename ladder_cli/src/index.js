@@ -43,7 +43,7 @@ program
   .description('Show the results for a single person')
   .action(async name => {
     const games = await apiService.getProfile(name);
-    const data = games.map(game => game.rating);
+    const data = [1500, ...games.map(game => game.rating)];
     console.log(asciichart.plot(data, { height: 10 }));
     const wins = games.reduce((w, g) => (g.winner === name ? w + 1 : w), 0);
     console.log(`${games.length} games played`);
