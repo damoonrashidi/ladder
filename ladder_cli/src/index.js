@@ -118,11 +118,11 @@ program.parse(process.argv);
 
 if (!process.argv.slice(2).length) {
   const title = `
-##########################
-##                                            ##
-##        Welcome to King of Pong CLI        ##
-##                                            ##
-##########################`.replace(/#/g, '🏓');
+#########################
+##                                          ##
+##        Welcome to King of Pong CLI       ##
+##                                          ##
+#########################`.replace(/#/g, '🏓');
   console.log(title);
   program.help();
   checkForUpdates();
