@@ -113,6 +113,37 @@ program
     checkForUpdates();
   });
 
+program
+  .command('suggest')
+  .description('Suggest an opponent')
+  .action(async () => {
+    const name = settingsManager.get('name');
+    const list = await apiService.getRankings();
+    const profile = await apiService.getProfile(name);
+    const listMap = new Map();
+    list.forEach(player => listMap.set(player.name, 0));
+    const rating = profile[profile.length - 1].rating;
+    const opponents = profile
+      .map(game => (game.winner === name ? game.loser : game.winner))
+      .reduce((players, player) => {
+        players.set(player, players.get(player) + 1);
+        return players;
+      }, listMap);
+    const close = list.filter(
+      player => Math.abs(player.points - rating) <= 20 && list.name !== name
+    );
+    const closeRareOpponents = [...opponents]
+      .filter(([player, _]) => close.map(p => p.name).includes(player))
+      .sort(([_, games1], [__, games2]) => games1 - games2)
+      .filter(([player, _]) => player !== name);
+    if (closeRareOpponents.length > 1) {
+      const [found, points] = closeRareOpponents[
+        Math.round(Math.random() * closeRareOpponents.length) - 1
+      ];
+      console.log(`Play vs ${found}`);
+    }
+  });
+
 // Give the arguments to commander
 program.parse(process.argv);
 
