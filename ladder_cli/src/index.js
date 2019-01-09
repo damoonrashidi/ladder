@@ -141,6 +141,10 @@ program
         Math.round(Math.random() * closeRareOpponents.length) - 1
       ];
       console.log(`Play vs ${found}`);
+    } else {
+      console.log(
+        `Coudln't find a suggestion for you, play a few more games and try again.`
+      );
     }
   });
 

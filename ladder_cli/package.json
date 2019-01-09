@@ -1,6 +1,6 @@
 {
   "name": "kingofpong",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "CLI tool for King of Pong",
   "main": "src/index.js",
   "bin": {
