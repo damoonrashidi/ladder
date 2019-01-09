@@ -130,7 +130,7 @@ program
         return players;
       }, listMap);
     const close = list.filter(
-      player => Math.abs(player.points - rating) <= 20 && list.name !== name
+      player => Math.abs(player.points - rating) <= 50 && list.name !== name
     );
     const closeRareOpponents = [...opponents]
       .filter(([player, _]) => close.map(p => p.name).includes(player))
