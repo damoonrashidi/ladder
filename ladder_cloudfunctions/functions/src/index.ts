@@ -84,7 +84,6 @@ export const person = functions.https.onRequest(async (req, res) => {
     .then(snapshot => {
       let _games = [];
       snapshot.forEach(game => {
-        console.log(game.data());
         const winner = game.data().winner.toLowerCase();
         const loser = game.data().loser.toLowerCase();
 
