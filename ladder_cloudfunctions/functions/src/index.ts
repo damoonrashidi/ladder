@@ -17,7 +17,7 @@ export const rating = (
   winner: number,
   loser: number
 ): { winner: number; loser: number } => {
-  const K = 24;
+  const K = 32;
   const pWinner = 1 / (1 + Math.pow(10, (loser - winner) / 400));
   const pLoser = 1 / (1 + Math.pow(10, (winner - loser) / 400));
 
@@ -84,6 +84,7 @@ export const person = functions.https.onRequest(async (req, res) => {
     .then(snapshot => {
       let _games = [];
       snapshot.forEach(game => {
+        console.log(game.data());
         const winner = game.data().winner.toLowerCase();
         const loser = game.data().loser.toLowerCase();
 

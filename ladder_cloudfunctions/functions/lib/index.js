@@ -17,7 +17,7 @@ admin.initializeApp(functions.config().firebase);
 firebase.initializeApp(Object.assign({}, functions.config().firebase, { projectId: 'ladder-41a39' }));
 const db = firebase.firestore();
 exports.rating = (winner, loser) => {
-    const K = 24;
+    const K = 32;
     const pWinner = 1 / (1 + Math.pow(10, (loser - winner) / 400));
     const pLoser = 1 / (1 + Math.pow(10, (winner - loser) / 400));
     const rWinner = winner + K * (1 - pWinner);
@@ -71,6 +71,7 @@ exports.person = functions.https.onRequest((req, res) => __awaiter(this, void 0,
         .then(snapshot => {
         let _games = [];
         snapshot.forEach(game => {
+            console.log(game.data());
             const winner = game.data().winner.toLowerCase();
             const loser = game.data().loser.toLowerCase();
             if (winner === name || loser === name) {
