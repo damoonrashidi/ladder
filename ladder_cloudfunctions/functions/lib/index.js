@@ -9,9 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
+const firebase = require("firebase");
 const admin = require("firebase-admin");
-admin.initializeApp();
-const db = admin.firestore();
+// const app = firebase.app('ladder-41a39');
+// app.firestore().settings({ timestampsInSnapshots: true });
+admin.initializeApp(functions.config().firebase);
+firebase.initializeApp(Object.assign({}, functions.config().firebase, { projectId: 'ladder-41a39' }));
+const db = firebase.firestore();
 exports.rating = (winner, loser) => {
     const K = 24;
     const pWinner = 1 / (1 + Math.pow(10, (loser - winner) / 400));
@@ -41,17 +45,17 @@ exports.people = functions.https.onRequest((req, res) => __awaiter(this, void 0,
     res.set('Access-Control-Allow-Methods', 'GET');
     return db
         .collection('games')
-        .orderBy('timestamp', 'desc')
+        .orderBy('timestamp', 'asc')
         .get()
         .then(snapshot => {
-        const _people = new Map();
+        const rankings = new Map();
         snapshot.forEach(match => {
             const { winner, loser } = match.data();
-            const newRatings = exports.rating(_people.get(winner) || 1500, _people.get(loser) || 1500);
-            _people.set(winner, newRatings.winner);
-            _people.set(loser, newRatings.loser);
+            const newRatings = exports.rating(rankings.get(winner) || 1500, rankings.get(loser) || 1500);
+            rankings.set(winner, newRatings.winner);
+            rankings.set(loser, newRatings.loser);
         });
-        res.send([..._people].map(([name, points]) => ({ name, points })));
+        res.send([...rankings].map(([name, points]) => ({ name, points })));
     });
 }));
 exports.person = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {

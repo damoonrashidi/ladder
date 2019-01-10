@@ -1,9 +1,17 @@
 import * as functions from 'firebase-functions';
+import * as firebase from 'firebase';
 import * as admin from 'firebase-admin';
 
-admin.initializeApp();
+// const app = firebase.app('ladder-41a39');
+// app.firestore().settings({ timestampsInSnapshots: true });
 
-const db = admin.firestore();
+admin.initializeApp(functions.config().firebase);
+firebase.initializeApp({
+  ...functions.config().firebase,
+  projectId: 'ladder-41a39',
+});
+
+const db = firebase.firestore();
 
 export const rating = (
   winner: number,
@@ -43,22 +51,22 @@ export const people = functions.https.onRequest(async (req, res) => {
 
   return db
     .collection('games')
-    .orderBy('timestamp', 'desc')
+    .orderBy('timestamp', 'asc')
     .get()
     .then(snapshot => {
-      const _people = new Map<string, number>();
+      const rankings = new Map<string, number>();
       snapshot.forEach(match => {
         const { winner, loser } = match.data();
         const newRatings = rating(
-          _people.get(winner) || 1500,
-          _people.get(loser) || 1500
+          rankings.get(winner) || 1500,
+          rankings.get(loser) || 1500
         );
 
-        _people.set(winner, newRatings.winner);
-        _people.set(loser, newRatings.loser);
+        rankings.set(winner, newRatings.winner);
+        rankings.set(loser, newRatings.loser);
       });
 
-      res.send([..._people].map(([name, points]) => ({ name, points })));
+      res.send([...rankings].map(([name, points]) => ({ name, points })));
     });
 });
 
