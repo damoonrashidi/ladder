@@ -97,7 +97,7 @@ program
           colors.green('Victory'),
           'vs',
           game.loser,
-          colors.red(`(+${game.rating - rating})`)
+          colors.green(`(+${game.rating - rating})`)
         );
       } else {
         console.log(
