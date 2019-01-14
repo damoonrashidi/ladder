@@ -97,7 +97,6 @@ exports.reportGame = functions.https.onRequest((req, res) => __awaiter(this, voi
     const { winner, loser } = req.body;
     if (winner === '' || loser === '') {
         throw new Error('Both winner and loser must be defined');
-        return;
     }
     return db
         .collection('games')

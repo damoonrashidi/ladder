@@ -123,7 +123,6 @@ export const reportGame = functions.https.onRequest(async (req, res) => {
 
   if (winner === '' || loser === '') {
     throw new Error('Both winner and loser must be defined');
-    return;
   }
 
   return db
