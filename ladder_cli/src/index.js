@@ -136,10 +136,8 @@ program
       .filter(([player, _]) => close.map(p => p.name).includes(player))
       .sort(([_, games1], [__, games2]) => games1 - games2)
       .filter(([player, _]) => player !== name);
-    if (closeRareOpponents.length > 1) {
-      const [found, points] = closeRareOpponents[
-        Math.round(Math.random() * closeRareOpponents.length) - 1
-      ];
+    if (closeRareOpponents.length > 0) {
+      const [found, _] = closeRareOpponents[0];
       console.log(`Play vs ${found}`);
     } else {
       console.log(
