@@ -74,7 +74,7 @@ export const person = functions.https.onRequest(async (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
   res.set('Access-Control-Allow-Methods', 'GET');
 
-  const name = 'damoon'; //req.query.name.toLowerCase();
+  const name = req.query.name.toLowerCase();
   const ratings = new Map<String, number>();
   let consecutiveWins = 0;
   return db

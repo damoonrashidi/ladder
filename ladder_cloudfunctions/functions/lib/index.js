@@ -62,7 +62,7 @@ exports.people = functions.https.onRequest((req, res) => __awaiter(this, void 0,
 exports.person = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
     res.set('Access-Control-Allow-Origin', '*');
     res.set('Access-Control-Allow-Methods', 'GET');
-    const name = 'damoon'; //req.query.name.toLowerCase();
+    const name = req.query.name.toLowerCase();
     const ratings = new Map();
     let consecutiveWins = 0;
     return db
