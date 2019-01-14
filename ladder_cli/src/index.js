@@ -95,16 +95,16 @@ program
       if (game.winner.toLowerCase() === name.toLowerCase()) {
         console.log(
           colors.green('Victory'),
-          'vs ',
+          'vs',
           game.loser,
-          `(+${game.rating - rating})`
+          colors.red(`(+${game.rating - rating})`)
         );
       } else {
         console.log(
-          colors.red('Defeat'),
-          'vs ',
+          colors.red(' Defeat'),
+          'vs',
           game.winner,
-          `(${game.rating - rating})`
+          colors.red(`(${game.rating - rating})`)
         );
       }
       rating = game.rating;

@@ -1,6 +1,6 @@
 {
   "name": "kingofpong",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "description": "CLI tool for King of Pong",
   "main": "src/index.js",
   "bin": {
@@ -13,6 +13,7 @@
     "cachios": "^2.1.0",
     "colors": "^1.3.3",
     "commander": "^2.19.0",
+    "date-fns": "^2.0.0-alpha.27",
     "inquirer": "^6.2.1",
     "inquirer-autocomplete-prompt": "^1.0.1"
   }

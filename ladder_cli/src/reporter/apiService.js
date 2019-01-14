@@ -1,5 +1,7 @@
 const axios = require('axios');
 const cachios = require('cachios');
+const format = require('date-fns').format;
+const differenceInDays = require('date-fns').differenceInDays;
 
 module.exports = {
   getPeople(exclude, filter = undefined) {
@@ -47,14 +49,19 @@ module.exports = {
       })
       .then(response =>
         response.data
-          .sort((a, b) => Date.parse(b.timestamp) - Date.parse(a.timestamp))
-          .map(
-            game =>
-              `${new Date(Date.parse(game.timestamp))
-                .toISOString()
-                .substr(0, 19)
-                .replace('T', ' ')} - ${game.winner} beat ${game.loser}`
+          .sort(
+            (a, b) =>
+              Date.parse(b.timestamp.seconds) - Date.parse(a.timestamp.seconds)
           )
+          .filter(
+            game =>
+              differenceInDays(Date.now(), game.timestamp.seconds * 1000) <= 2
+          )
+          .map(game => {
+            return `${format(game.timestamp.seconds * 1000, 'YYYY MMM dd', {
+              awareOfUnicodeTokens: true,
+            })} - ${game.winner} beat ${game.loser}`;
+          })
       );
   },
 
