@@ -11,11 +11,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
 const firebase = require("firebase");
 const admin = require("firebase-admin");
-// const app = firebase.app('ladder-41a39');
-// app.firestore().settings({ timestampsInSnapshots: true });
 admin.initializeApp(functions.config().firebase);
 firebase.initializeApp(Object.assign({}, functions.config().firebase, { projectId: 'ladder-41a39' }));
 const db = firebase.firestore();
+db.settings({
+    timestampsInSnapshots: true,
+});
 exports.rating = (winner, loser) => {
     const K = 32;
     const pWinner = 1 / (1 + Math.pow(10, (loser - winner) / 400));
@@ -23,8 +24,8 @@ exports.rating = (winner, loser) => {
     const rWinner = winner + K * (1 - pWinner);
     const rLoser = loser + K * (0 - pLoser);
     return {
-        winner: Math.floor(rWinner),
-        loser: Math.floor(rLoser),
+        winner: Math.ceil(rWinner),
+        loser: Math.ceil(rLoser),
     };
 };
 exports.games = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
@@ -61,7 +62,7 @@ exports.people = functions.https.onRequest((req, res) => __awaiter(this, void 0,
 exports.person = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
     res.set('Access-Control-Allow-Origin', '*');
     res.set('Access-Control-Allow-Methods', 'GET');
-    const name = req.query.name.toLowerCase();
+    const name = 'damoon'; //req.query.name.toLowerCase();
     const ratings = new Map();
     let consecutiveWins = 0;
     return db
@@ -71,14 +72,18 @@ exports.person = functions.https.onRequest((req, res) => __awaiter(this, void 0,
         .then(snapshot => {
         let _games = [];
         snapshot.forEach(game => {
-            console.log(game.data());
             const winner = game.data().winner.toLowerCase();
             const loser = game.data().loser.toLowerCase();
-            if (winner === name || loser === name) {
-                consecutiveWins = name === winner ? consecutiveWins + 1 : 0;
-                const newRatings = exports.rating(ratings.get(winner) || 1500, ratings.get(loser) || 1500);
-                ratings.set(winner, newRatings.winner);
-                ratings.set(loser, newRatings.loser);
+            if (name === winner) {
+                consecutiveWins += 1;
+            }
+            else if (name === loser) {
+                consecutiveWins = 0;
+            }
+            const newRatings = exports.rating(ratings.get(winner) || 1500, ratings.get(loser) || 1500);
+            ratings.set(winner, newRatings.winner);
+            ratings.set(loser, newRatings.loser);
+            if ([winner, loser].includes(name)) {
                 _games = _games.concat(Object.assign({}, game.data(), { rating: newRatings[name === winner ? 'winner' : 'loser'], consecutiveWins }));
             }
         });
@@ -90,7 +95,10 @@ exports.reportGame = functions.https.onRequest((req, res) => __awaiter(this, voi
     res.set('Access-Control-Allow-Methods', 'POST');
     const timestamp = new Date();
     const { winner, loser } = req.body;
-    console.log(req.body, winner, loser);
+    if (winner === '' || loser === '') {
+        throw new Error('Both winner and loser must be defined');
+        return;
+    }
     return db
         .collection('games')
         .add({

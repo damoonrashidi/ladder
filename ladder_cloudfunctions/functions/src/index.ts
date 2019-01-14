@@ -2,9 +2,6 @@ import * as functions from 'firebase-functions';
 import * as firebase from 'firebase';
 import * as admin from 'firebase-admin';
 
-// const app = firebase.app('ladder-41a39');
-// app.firestore().settings({ timestampsInSnapshots: true });
-
 admin.initializeApp(functions.config().firebase);
 firebase.initializeApp({
   ...functions.config().firebase,
@@ -12,6 +9,9 @@ firebase.initializeApp({
 });
 
 const db = firebase.firestore();
+db.settings({
+  timestampsInSnapshots: true,
+});
 
 export const rating = (
   winner: number,
@@ -25,8 +25,8 @@ export const rating = (
   const rLoser = loser + K * (0 - pLoser);
 
   return {
-    winner: Math.floor(rWinner),
-    loser: Math.floor(rLoser),
+    winner: Math.ceil(rWinner),
+    loser: Math.ceil(rLoser),
   };
 };
 
@@ -74,7 +74,7 @@ export const person = functions.https.onRequest(async (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
   res.set('Access-Control-Allow-Methods', 'GET');
 
-  const name = req.query.name.toLowerCase();
+  const name = 'damoon'; //req.query.name.toLowerCase();
   const ratings = new Map<String, number>();
   let consecutiveWins = 0;
   return db
@@ -87,17 +87,21 @@ export const person = functions.https.onRequest(async (req, res) => {
         const winner = game.data().winner.toLowerCase();
         const loser = game.data().loser.toLowerCase();
 
-        if (winner === name || loser === name) {
-          consecutiveWins = name === winner ? consecutiveWins + 1 : 0;
+        if (name === winner) {
+          consecutiveWins += 1;
+        } else if (name === loser) {
+          consecutiveWins = 0;
+        }
 
-          const newRatings = rating(
-            ratings.get(winner) || 1500,
-            ratings.get(loser) || 1500
-          );
+        const newRatings = rating(
+          ratings.get(winner) || 1500,
+          ratings.get(loser) || 1500
+        );
 
-          ratings.set(winner, newRatings.winner);
-          ratings.set(loser, newRatings.loser);
+        ratings.set(winner, newRatings.winner);
+        ratings.set(loser, newRatings.loser);
 
+        if ([winner, loser].includes(name)) {
           _games = _games.concat({
             ...game.data(),
             rating: newRatings[name === winner ? 'winner' : 'loser'],
@@ -117,7 +121,11 @@ export const reportGame = functions.https.onRequest(async (req, res) => {
   const timestamp = new Date();
   const { winner, loser } = req.body;
 
-  console.log(req.body, winner, loser);
+  if (winner === '' || loser === '') {
+    throw new Error('Both winner and loser must be defined');
+    return;
+  }
+
   return db
     .collection('games')
     .add({
