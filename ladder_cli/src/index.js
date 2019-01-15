@@ -81,8 +81,19 @@ program
   .action(async name => {
     name = name || settingsManager.get('name');
 
+    if (name == null) {
+      console.log('Please provide a name.');
+      return;
+    }
+
     let rating = 1500;
     const games = await apiService.getProfile(name);
+
+    if (games.length === 0) {
+      console.log('This profile has no games.');
+      return;
+    }
+
     const data = [1500, ...games.map(game => game.rating)];
     console.log(asciichart.plot(data, { height: 10 }));
     const wins = games.reduce(
