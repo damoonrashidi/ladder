@@ -131,8 +131,22 @@ program
   .description('Suggest an opponent')
   .action(async () => {
     const name = settingsManager.get('name');
+
+    if (name == null) {
+      console.log('You need to report a game before suggestions can be made.');
+      return;
+    }
+
     const list = await apiService.getRankings();
     const profile = await apiService.getProfile(name);
+
+    if (profile.length === 0) {
+      console.log(
+        'You need to play at least one game before suggestions can be made.'
+      );
+      return;
+    }
+
     const listMap = new Map();
     list.forEach(player => listMap.set(player.name, 0));
     const rating = profile[profile.length - 1].rating;
