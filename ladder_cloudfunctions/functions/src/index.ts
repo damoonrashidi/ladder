@@ -134,5 +134,6 @@ export const reportGame = functions.https.onRequest(async (req, res) => {
     })
     .then(match => {
       res.redirect(303, match.path.toString());
-    });
+    })
+    .catch(console.log);
 });

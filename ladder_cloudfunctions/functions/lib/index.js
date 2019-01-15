@@ -107,6 +107,7 @@ exports.reportGame = functions.https.onRequest((req, res) => __awaiter(this, voi
     })
         .then(match => {
         res.redirect(303, match.path.toString());
-    });
+    })
+        .catch(console.log);
 }));
 //# sourceMappingURL=index.js.map
