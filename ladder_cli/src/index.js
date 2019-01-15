@@ -76,9 +76,11 @@ program
   });
 
 program
-  .command('profile <name>')
+  .command('profile [name]')
   .description('Show the results for a single person')
   .action(async name => {
+    name = name || settingsManager.get('name');
+
     let rating = 1500;
     const games = await apiService.getProfile(name);
     const data = [1500, ...games.map(game => game.rating)];
