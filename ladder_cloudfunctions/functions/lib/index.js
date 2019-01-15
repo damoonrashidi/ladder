@@ -101,8 +101,8 @@ exports.reportGame = functions.https.onRequest((req, res) => __awaiter(this, voi
     return db
         .collection('games')
         .add({
-        winner,
-        loser,
+        winner: winner.trim(),
+        loser: loser.trim(),
         timestamp,
     })
         .then(match => {

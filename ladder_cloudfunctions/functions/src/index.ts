@@ -128,8 +128,8 @@ export const reportGame = functions.https.onRequest(async (req, res) => {
   return db
     .collection('games')
     .add({
-      winner,
-      loser,
+      winner: winner.trim(),
+      loser: loser.trim(),
       timestamp,
     })
     .then(match => {
