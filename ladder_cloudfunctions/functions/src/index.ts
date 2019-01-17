@@ -34,7 +34,7 @@ export const simulate = functions.https.onRequest((req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
   res.set('Access-Control-Allow-Methods', 'GET');
 
-  res.send(rating(+req.body.winner, +req.body.loser));
+  res.send(rating(+req.query.winner, +req.query.loser));
 });
 
 export const games = functions.https.onRequest(async (req, res) => {
