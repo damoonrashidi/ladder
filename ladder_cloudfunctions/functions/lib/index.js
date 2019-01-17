@@ -28,6 +28,11 @@ exports.rating = (winner, loser) => {
         loser: Math.ceil(rLoser),
     };
 };
+exports.simulate = functions.https.onRequest((req, res) => {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'GET');
+    res.send(exports.rating(+req.body.winner, +req.body.loser));
+});
 exports.games = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
     res.set('Access-Control-Allow-Origin', '*');
     res.set('Access-Control-Allow-Methods', 'GET');
