@@ -49,6 +49,7 @@ exports.games = functions.https.onRequest((req, res) => __awaiter(this, void 0, 
 exports.people = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
     res.set('Access-Control-Allow-Origin', '*');
     res.set('Access-Control-Allow-Methods', 'GET');
+    const consecutiveWins = new Map();
     return db
         .collection('games')
         .orderBy('timestamp', 'asc')
@@ -58,10 +59,16 @@ exports.people = functions.https.onRequest((req, res) => __awaiter(this, void 0,
         snapshot.forEach(match => {
             const { winner, loser } = match.data();
             const newRatings = exports.rating(rankings.get(winner) || 1500, rankings.get(loser) || 1500);
+            consecutiveWins.set(winner, (consecutiveWins.get(winner) || 0) + 1);
+            consecutiveWins.set(loser, 0);
             rankings.set(winner, newRatings.winner);
             rankings.set(loser, newRatings.loser);
         });
-        res.send([...rankings].map(([name, points]) => ({ name, points })));
+        res.send([...rankings].map(([name, points]) => ({
+            name,
+            points,
+            consecutiveWins: consecutiveWins.get(name),
+        })));
     });
 }));
 exports.person = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {

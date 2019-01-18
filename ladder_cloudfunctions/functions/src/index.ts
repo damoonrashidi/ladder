@@ -56,6 +56,8 @@ export const people = functions.https.onRequest(async (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
   res.set('Access-Control-Allow-Methods', 'GET');
 
+  const consecutiveWins = new Map<string, number>();
+
   return db
     .collection('games')
     .orderBy('timestamp', 'asc')
@@ -69,11 +71,19 @@ export const people = functions.https.onRequest(async (req, res) => {
           rankings.get(loser) || 1500
         );
 
+        consecutiveWins.set(winner, (consecutiveWins.get(winner) || 0) + 1);
+        consecutiveWins.set(loser, 0);
         rankings.set(winner, newRatings.winner);
         rankings.set(loser, newRatings.loser);
       });
 
-      res.send([...rankings].map(([name, points]) => ({ name, points })));
+      res.send(
+        [...rankings].map(([name, points]) => ({
+          name,
+          points,
+          consecutiveWins: consecutiveWins.get(name),
+        }))
+      );
     });
 });
 
