@@ -1,4 +1,4 @@
-import { Component } from '@stencil/core';
+import { Component, Prop } from '@stencil/core';
 import { Game } from './game.interface';
 import { css } from 'glamor';
 const gameRow = css({
@@ -19,6 +19,7 @@ const gameRow = css({
 })
 export class HistoryListComponent {
   games: Game[] = [];
+  @Prop() name: string = '';
 
   async componentWillLoad() {
     this.games = await (await fetch(

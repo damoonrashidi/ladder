@@ -4,13 +4,13 @@ import { Component, Prop } from '@stencil/core';
   tag: 'app-avatar',
 })
 export class AvatarComponent {
-  @Prop() user: string = '';
+  @Prop() name: string = '';
   @Prop() points: number = 0;
 
   render() {
     return (
       <div>
-        <h3>{this.user}</h3>
+        <h3>{this.name}</h3>
         <p>{this.points}</p>
       </div>
     );

@@ -48,11 +48,13 @@ program
 
     (await apiService.getRankings())
       .map(person => {
+        const onFire =
+          person.consecutiveWins >= 3 ? `🔥x${person.consecutiveWins}` : '';
         if (person.name === name) {
-          return colors.blue(`${person.points} ${person.name}`);
+          return colors.blue(`${person.points} ${person.name} ${onFire} `);
         }
 
-        return `${person.points} ${person.name}`;
+        return `${person.points} ${person.name} ${onFire} `;
       })
       .forEach((person, index) => {
         const number = (index + 1).toString();

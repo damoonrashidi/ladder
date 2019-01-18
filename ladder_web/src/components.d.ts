@@ -17,19 +17,27 @@ export namespace Components {
   interface AppRootAttributes extends StencilHTMLAttributes {}
 
   interface AppAvatar {
+    'name': string;
     'points': number;
-    'user': string;
   }
   interface AppAvatarAttributes extends StencilHTMLAttributes {
+    'name'?: string;
     'points'?: number;
-    'user'?: string;
   }
 
-  interface AppHistoryList {}
-  interface AppHistoryListAttributes extends StencilHTMLAttributes {}
+  interface AppHistoryList {
+    'name': string;
+  }
+  interface AppHistoryListAttributes extends StencilHTMLAttributes {
+    'name'?: string;
+  }
 
-  interface AppPersonList {}
-  interface AppPersonListAttributes extends StencilHTMLAttributes {}
+  interface AppPersonList {
+    'name': string;
+  }
+  interface AppPersonListAttributes extends StencilHTMLAttributes {
+    'name'?: string;
+  }
 
   interface AppPerson {
     'name': string;

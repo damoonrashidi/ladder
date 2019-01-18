@@ -1,9 +1,9 @@
-import { Component, State } from '@stencil/core';
+import { Component, State, Prop } from '@stencil/core';
 import { css } from 'glamor';
 import { Person } from './person.interface';
 
 const list = css({
-  width: `300px`,
+  width: 300,
 }).toString();
 
 @Component({
@@ -11,6 +11,7 @@ const list = css({
 })
 export class PersonListComponent {
   @State() people: Person[] = [];
+  @Prop() name: string = '';
 
   async componentWillLoad() {
     this.people = await (await fetch(
@@ -22,7 +23,11 @@ export class PersonListComponent {
     return this.people
       .sort((a, b) => b.points - a.points)
       .map(person => (
-        <app-person name={person.name} points={person.points} user={'Damoon'} />
+        <app-person
+          name={person.name}
+          points={person.points}
+          user={this.name}
+        />
       ));
   }
 
