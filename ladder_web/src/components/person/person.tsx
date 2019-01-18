@@ -1,4 +1,5 @@
 import { Component, Prop } from '@stencil/core';
+import { Person } from './person.interface';
 import { css } from 'glamor';
 
 const style = css({
@@ -30,6 +31,12 @@ const button = css({
   },
 }).toString();
 
+const nameStyle = css({
+  display: `inline-flex`,
+  justifyContent: `center`,
+  alignItems: `center`,
+}).toString();
+
 const numberStyle = css({
   fontFamily: 'Montserrat',
 }).toString();
@@ -40,23 +47,34 @@ const numberStyle = css({
 export class PersonComponent {
   @Prop() name: string;
   @Prop() points: number;
-  @Prop() user: string;
+  @Prop() person: Person;
 
   gotBeat() {
+    const loser = this.person.name;
     fetch('https://us-central1-ladder-41a39.cloudfunctions.net/reportGame', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ winner: this.user, loser: this.name }),
+      body: JSON.stringify({ winner: this.name, loser }),
     });
   }
 
   render() {
     return (
       <div class={style}>
-        <span>{this.name}</span>
-        <span class={numberStyle}>{this.points}</span>
+        <span class={nameStyle}>
+          {this.person.consecutiveWins >= 3 ? (
+            <div>
+              <img src="/assets/whatshot.svg" />{' '}
+              <span> x {this.person.consecutiveWins}</span>
+            </div>
+          ) : (
+            <span />
+          )}
+          {this.person.name}
+        </span>
+        <span class={numberStyle}>{this.person.points}</span>
         <button class={button} onClick={() => this.gotBeat()}>
           Gottem!
         </button>

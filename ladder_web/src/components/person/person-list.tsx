@@ -7,7 +7,7 @@ const list = css({
 }).toString();
 
 @Component({
-  tag: 'app-person-list',
+  tag: 'app-rankings',
 })
 export class PersonListComponent {
   @State() people: Person[] = [];
@@ -22,13 +22,7 @@ export class PersonListComponent {
   toPerson() {
     return this.people
       .sort((a, b) => b.points - a.points)
-      .map(person => (
-        <app-person
-          name={person.name}
-          points={person.points}
-          user={this.name}
-        />
-      ));
+      .map(person => <app-person person={person} name={this.name} />);
   }
 
   render() {

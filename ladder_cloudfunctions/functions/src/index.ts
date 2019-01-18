@@ -32,14 +32,14 @@ export const rating = (
 
 export const simulate = functions.https.onRequest((req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Methods', 'GET');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
 
   res.send(rating(+req.query.winner, +req.query.loser));
 });
 
 export const games = functions.https.onRequest(async (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Methods', 'GET');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
 
   return db
     .collection('games')
@@ -54,7 +54,7 @@ export const games = functions.https.onRequest(async (req, res) => {
 
 export const people = functions.https.onRequest(async (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Methods', 'GET');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
 
   const consecutiveWins = new Map<string, number>();
 
@@ -89,7 +89,7 @@ export const people = functions.https.onRequest(async (req, res) => {
 
 export const person = functions.https.onRequest(async (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Methods', 'GET');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
 
   const name = req.query.name.toLowerCase();
   const ratings = new Map<String, number>();
@@ -133,7 +133,7 @@ export const person = functions.https.onRequest(async (req, res) => {
 
 export const reportGame = functions.https.onRequest(async (req, res) => {
   res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Methods', 'POST');
+  res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
 
   const timestamp = new Date();
   const { winner, loser } = req.body;

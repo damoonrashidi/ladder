@@ -1,7 +1,5 @@
 import { Component, State } from '@stencil/core';
-import { css } from 'glamor';
-
-const main = css({}).toString();
+import * as css from './app-root.styles';
 
 @Component({
   tag: 'app-root',
@@ -19,10 +17,10 @@ export class AppRoot {
 
   render() {
     return (
-      <div class={main}>
+      <div class={css.main}>
         <div>
           <h2>King of Pong</h2>
-          <app-person-list name={this.name} />
+          <app-rankings name={this.name} />
         </div>
         <div>
           <h2>History</h2>

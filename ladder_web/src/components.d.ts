@@ -9,6 +9,9 @@ import '@stencil/core';
 
 import '@ionic/core';
 import 'ionicons';
+import {
+  Person,
+} from './components/person/person.interface';
 
 
 export namespace Components {
@@ -32,22 +35,22 @@ export namespace Components {
     'name'?: string;
   }
 
-  interface AppPersonList {
+  interface AppRankings {
     'name': string;
   }
-  interface AppPersonListAttributes extends StencilHTMLAttributes {
+  interface AppRankingsAttributes extends StencilHTMLAttributes {
     'name'?: string;
   }
 
   interface AppPerson {
     'name': string;
+    'person': Person;
     'points': number;
-    'user': string;
   }
   interface AppPersonAttributes extends StencilHTMLAttributes {
     'name'?: string;
+    'person'?: Person;
     'points'?: number;
-    'user'?: string;
   }
 }
 
@@ -56,7 +59,7 @@ declare global {
     'AppRoot': Components.AppRoot;
     'AppAvatar': Components.AppAvatar;
     'AppHistoryList': Components.AppHistoryList;
-    'AppPersonList': Components.AppPersonList;
+    'AppRankings': Components.AppRankings;
     'AppPerson': Components.AppPerson;
   }
 
@@ -64,7 +67,7 @@ declare global {
     'app-root': Components.AppRootAttributes;
     'app-avatar': Components.AppAvatarAttributes;
     'app-history-list': Components.AppHistoryListAttributes;
-    'app-person-list': Components.AppPersonListAttributes;
+    'app-rankings': Components.AppRankingsAttributes;
     'app-person': Components.AppPersonAttributes;
   }
 
@@ -87,10 +90,10 @@ declare global {
     new (): HTMLAppHistoryListElement;
   };
 
-  interface HTMLAppPersonListElement extends Components.AppPersonList, HTMLStencilElement {}
-  var HTMLAppPersonListElement: {
-    prototype: HTMLAppPersonListElement;
-    new (): HTMLAppPersonListElement;
+  interface HTMLAppRankingsElement extends Components.AppRankings, HTMLStencilElement {}
+  var HTMLAppRankingsElement: {
+    prototype: HTMLAppRankingsElement;
+    new (): HTMLAppRankingsElement;
   };
 
   interface HTMLAppPersonElement extends Components.AppPerson, HTMLStencilElement {}
@@ -103,7 +106,7 @@ declare global {
     'app-root': HTMLAppRootElement
     'app-avatar': HTMLAppAvatarElement
     'app-history-list': HTMLAppHistoryListElement
-    'app-person-list': HTMLAppPersonListElement
+    'app-rankings': HTMLAppRankingsElement
     'app-person': HTMLAppPersonElement
   }
 
@@ -111,7 +114,7 @@ declare global {
     'app-root': HTMLAppRootElement;
     'app-avatar': HTMLAppAvatarElement;
     'app-history-list': HTMLAppHistoryListElement;
-    'app-person-list': HTMLAppPersonListElement;
+    'app-rankings': HTMLAppRankingsElement;
     'app-person': HTMLAppPersonElement;
   }
 
