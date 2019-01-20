@@ -19,12 +19,8 @@ export class AppRoot {
     return (
       <div class={css.main}>
         <div>
-          <h2>King of Pong</h2>
+          <h2 class={css.h2}>King of Pong</h2>
           <app-rankings name={this.name} />
-        </div>
-        <div>
-          <h2>History</h2>
-          <app-history-list name={this.name} />
         </div>
       </div>
     );

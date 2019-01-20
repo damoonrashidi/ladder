@@ -30,12 +30,12 @@ exports.rating = (winner, loser) => {
 };
 exports.simulate = functions.https.onRequest((req, res) => {
     res.set('Access-Control-Allow-Origin', '*');
-    res.set('Access-Control-Allow-Methods', 'GET');
+    res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.send(exports.rating(+req.query.winner, +req.query.loser));
 });
 exports.games = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
     res.set('Access-Control-Allow-Origin', '*');
-    res.set('Access-Control-Allow-Methods', 'GET');
+    res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
     return db
         .collection('games')
         .orderBy('timestamp', 'desc')
@@ -48,7 +48,7 @@ exports.games = functions.https.onRequest((req, res) => __awaiter(this, void 0, 
 }));
 exports.people = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
     res.set('Access-Control-Allow-Origin', '*');
-    res.set('Access-Control-Allow-Methods', 'GET');
+    res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
     const consecutiveWins = new Map();
     return db
         .collection('games')
@@ -73,7 +73,7 @@ exports.people = functions.https.onRequest((req, res) => __awaiter(this, void 0,
 }));
 exports.person = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
     res.set('Access-Control-Allow-Origin', '*');
-    res.set('Access-Control-Allow-Methods', 'GET');
+    res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
     const name = req.query.name.toLowerCase();
     const ratings = new Map();
     let consecutiveWins = 0;
@@ -104,7 +104,7 @@ exports.person = functions.https.onRequest((req, res) => __awaiter(this, void 0,
 }));
 exports.reportGame = functions.https.onRequest((req, res) => __awaiter(this, void 0, void 0, function* () {
     res.set('Access-Control-Allow-Origin', '*');
-    res.set('Access-Control-Allow-Methods', 'POST');
+    res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
     const timestamp = new Date();
     const { winner, loser } = req.body;
     if (winner === '' || loser === '') {

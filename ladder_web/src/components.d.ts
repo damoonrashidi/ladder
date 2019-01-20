@@ -35,22 +35,24 @@ export namespace Components {
     'name'?: string;
   }
 
-  interface AppRankings {
-    'name': string;
-  }
-  interface AppRankingsAttributes extends StencilHTMLAttributes {
-    'name'?: string;
-  }
-
   interface AppPerson {
     'name': string;
     'person': Person;
     'points': number;
+    'rank': number;
   }
   interface AppPersonAttributes extends StencilHTMLAttributes {
     'name'?: string;
     'person'?: Person;
     'points'?: number;
+    'rank'?: number;
+  }
+
+  interface AppRankings {
+    'name': string;
+  }
+  interface AppRankingsAttributes extends StencilHTMLAttributes {
+    'name'?: string;
   }
 }
 
@@ -59,16 +61,16 @@ declare global {
     'AppRoot': Components.AppRoot;
     'AppAvatar': Components.AppAvatar;
     'AppHistoryList': Components.AppHistoryList;
-    'AppRankings': Components.AppRankings;
     'AppPerson': Components.AppPerson;
+    'AppRankings': Components.AppRankings;
   }
 
   interface StencilIntrinsicElements {
     'app-root': Components.AppRootAttributes;
     'app-avatar': Components.AppAvatarAttributes;
     'app-history-list': Components.AppHistoryListAttributes;
-    'app-rankings': Components.AppRankingsAttributes;
     'app-person': Components.AppPersonAttributes;
+    'app-rankings': Components.AppRankingsAttributes;
   }
 
 
@@ -90,32 +92,32 @@ declare global {
     new (): HTMLAppHistoryListElement;
   };
 
-  interface HTMLAppRankingsElement extends Components.AppRankings, HTMLStencilElement {}
-  var HTMLAppRankingsElement: {
-    prototype: HTMLAppRankingsElement;
-    new (): HTMLAppRankingsElement;
-  };
-
   interface HTMLAppPersonElement extends Components.AppPerson, HTMLStencilElement {}
   var HTMLAppPersonElement: {
     prototype: HTMLAppPersonElement;
     new (): HTMLAppPersonElement;
   };
 
+  interface HTMLAppRankingsElement extends Components.AppRankings, HTMLStencilElement {}
+  var HTMLAppRankingsElement: {
+    prototype: HTMLAppRankingsElement;
+    new (): HTMLAppRankingsElement;
+  };
+
   interface HTMLElementTagNameMap {
     'app-root': HTMLAppRootElement
     'app-avatar': HTMLAppAvatarElement
     'app-history-list': HTMLAppHistoryListElement
-    'app-rankings': HTMLAppRankingsElement
     'app-person': HTMLAppPersonElement
+    'app-rankings': HTMLAppRankingsElement
   }
 
   interface ElementTagNameMap {
     'app-root': HTMLAppRootElement;
     'app-avatar': HTMLAppAvatarElement;
     'app-history-list': HTMLAppHistoryListElement;
-    'app-rankings': HTMLAppRankingsElement;
     'app-person': HTMLAppPersonElement;
+    'app-rankings': HTMLAppRankingsElement;
   }
 
 

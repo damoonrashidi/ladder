@@ -1,83 +1,69 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Prop, State } from '@stencil/core';
 import { Person } from './person.interface';
-import { css } from 'glamor';
-
-const style = css({
-  display: `flex`,
-  flexDirection: `row`,
-  justifyContent: `space-between`,
-  alignItems: `center`,
-  padding: `10px 0`,
-  '&:not(:hover)': {
-    '> button': {
-      display: `none`,
-    },
-  },
-}).toString();
-
-const button = css({
-  background: `#41a4f4`,
-  color: `#fff`,
-  border: `none`,
-  padding: `8px 16px`,
-  borderRadius: 25,
-  outline: `none`,
-  cursor: `pointer`,
-  transition: `transform .2s ease-out`,
-  position: `absolute`,
-  transform: `translateX(250px)`,
-  '&:active': {
-    transform: `translate(250px, 3px) scaleX(1.05)`,
-  },
-}).toString();
-
-const nameStyle = css({
-  display: `inline-flex`,
-  justifyContent: `center`,
-  alignItems: `center`,
-}).toString();
-
-const numberStyle = css({
-  fontFamily: 'Montserrat',
-}).toString();
+import * as css from './person.styles';
 
 @Component({
   tag: 'app-person',
 })
 export class PersonComponent {
-  @Prop() name: string;
+  @Prop() name: string = '';
   @Prop() points: number;
   @Prop() person: Person;
+  @Prop() rank: number;
+  @State() expanded = false;
 
-  gotBeat() {
+  async gotBeat() {
     const loser = this.person.name;
-    fetch('https://us-central1-ladder-41a39.cloudfunctions.net/reportGame', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ winner: this.name, loser }),
-    });
+    console.log(JSON.stringify({ winner: this.name, loser }));
+    const response = await fetch(
+      'https://us-central1-ladder-41a39.cloudfunctions.net/reportGame',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ winner: this.name, loser }),
+      }
+    );
+    console.log(response);
+  }
+
+  toggle() {
+    this.expanded = !this.expanded;
+  }
+
+  listName(name: string, consecutiveWins: number) {
+    if (consecutiveWins >= 3) {
+      return (
+        <div class={css.wrapper} onClick={this.toggle.bind(this)}>
+          <div class={css.nameColor(name, this.name)}>
+            {name}
+            <img src="/assets/whatshot.svg" /> x {this.person.consecutiveWins}
+          </div>
+          <div class={css.dropdown(this.expanded)}>
+            <button class={css.button}>Gottem!</button>
+            <button class={css.button}>Didn't gettem :(</button>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div class={css.wrapper} onClick={this.toggle.bind(this)}>
+        <div class={css.nameColor(name, this.name)}>{name}</div>
+        <div class={css.dropdown(this.expanded)}>
+          <button class={css.button}>Gottem!</button>
+          <button class={css.button}>Didn't gettem :(</button>
+        </div>
+      </div>
+    );
   }
 
   render() {
     return (
-      <div class={style}>
-        <span class={nameStyle}>
-          {this.person.consecutiveWins >= 3 ? (
-            <div>
-              <img src="/assets/whatshot.svg" />{' '}
-              <span> x {this.person.consecutiveWins}</span>
-            </div>
-          ) : (
-            <span />
-          )}
-          {this.person.name}
-        </span>
-        <span class={numberStyle}>{this.person.points}</span>
-        <button class={button} onClick={() => this.gotBeat()}>
-          Gottem!
-        </button>
+      <div class={css.style}>
+        <span>{this.rank}.</span>
+        {this.listName(this.person.name, this.person.consecutiveWins)}
+        <span class={css.number}>{this.person.points}</span>
       </div>
     );
   }
