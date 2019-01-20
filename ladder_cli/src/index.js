@@ -3,7 +3,7 @@
 const program = require('commander');
 const colors = require('colors/safe');
 const asciichart = require('asciichart');
-const cachios = require('cachios');
+const axios = require('axios');
 
 const manifest = require('../package.json');
 const apiService = require('./reporter/apiService');
@@ -15,7 +15,7 @@ const settingsManager = new Settings();
 settingsManager.initialize();
 
 const checkForUpdates = async () => {
-  const remoteManifest = await cachios.get(
+  const remoteManifest = await axios.get(
     'https://raw.githubusercontent.com/damoonrashidi/ladder/master/ladder_cli/package.json'
   );
   const latestVersion = remoteManifest.data.version;
