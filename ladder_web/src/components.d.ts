@@ -7,8 +7,13 @@
 
 import '@stencil/core';
 
+import '@stencil/router';
+import '@stencil/state-tunnel';
 import '@ionic/core';
 import 'ionicons';
+import {
+  MatchResults,
+} from '@stencil/router';
 import {
   Person,
 } from './components/person/person.interface';
@@ -32,6 +37,20 @@ export namespace Components {
     'name': string;
   }
   interface AppHistoryListAttributes extends StencilHTMLAttributes {
+    'name'?: string;
+  }
+
+  interface ProfilePage {
+    'match': MatchResults;
+  }
+  interface ProfilePageAttributes extends StencilHTMLAttributes {
+    'match'?: MatchResults;
+  }
+
+  interface RankingsPage {
+    'name': string;
+  }
+  interface RankingsPageAttributes extends StencilHTMLAttributes {
     'name'?: string;
   }
 
@@ -61,6 +80,8 @@ declare global {
     'AppRoot': Components.AppRoot;
     'AppAvatar': Components.AppAvatar;
     'AppHistoryList': Components.AppHistoryList;
+    'ProfilePage': Components.ProfilePage;
+    'RankingsPage': Components.RankingsPage;
     'AppPerson': Components.AppPerson;
     'AppRankings': Components.AppRankings;
   }
@@ -69,6 +90,8 @@ declare global {
     'app-root': Components.AppRootAttributes;
     'app-avatar': Components.AppAvatarAttributes;
     'app-history-list': Components.AppHistoryListAttributes;
+    'profile-page': Components.ProfilePageAttributes;
+    'rankings-page': Components.RankingsPageAttributes;
     'app-person': Components.AppPersonAttributes;
     'app-rankings': Components.AppRankingsAttributes;
   }
@@ -92,6 +115,18 @@ declare global {
     new (): HTMLAppHistoryListElement;
   };
 
+  interface HTMLProfilePageElement extends Components.ProfilePage, HTMLStencilElement {}
+  var HTMLProfilePageElement: {
+    prototype: HTMLProfilePageElement;
+    new (): HTMLProfilePageElement;
+  };
+
+  interface HTMLRankingsPageElement extends Components.RankingsPage, HTMLStencilElement {}
+  var HTMLRankingsPageElement: {
+    prototype: HTMLRankingsPageElement;
+    new (): HTMLRankingsPageElement;
+  };
+
   interface HTMLAppPersonElement extends Components.AppPerson, HTMLStencilElement {}
   var HTMLAppPersonElement: {
     prototype: HTMLAppPersonElement;
@@ -108,6 +143,8 @@ declare global {
     'app-root': HTMLAppRootElement
     'app-avatar': HTMLAppAvatarElement
     'app-history-list': HTMLAppHistoryListElement
+    'profile-page': HTMLProfilePageElement
+    'rankings-page': HTMLRankingsPageElement
     'app-person': HTMLAppPersonElement
     'app-rankings': HTMLAppRankingsElement
   }
@@ -116,6 +153,8 @@ declare global {
     'app-root': HTMLAppRootElement;
     'app-avatar': HTMLAppAvatarElement;
     'app-history-list': HTMLAppHistoryListElement;
+    'profile-page': HTMLProfilePageElement;
+    'rankings-page': HTMLRankingsPageElement;
     'app-person': HTMLAppPersonElement;
     'app-rankings': HTMLAppRankingsElement;
   }

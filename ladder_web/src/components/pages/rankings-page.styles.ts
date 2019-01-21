@@ -7,10 +7,14 @@ export const main = css({
 }).toString();
 
 export const h2 = css({
+  position: `absolute`,
+  top: 0,
+  left: 0,
   fontWeight: 800,
   fontFamily: `Roboto`,
   textTransform: `uppercase`,
-  fontSize: `2.5em`,
+  fontSize: `10vw`,
+  transform: `translate(-20px, -40px)`,
   lineHeight: 1,
   color: `#f00`,
 }).toString();

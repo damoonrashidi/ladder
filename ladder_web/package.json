@@ -18,6 +18,7 @@
   "dependencies": {
     "@ionic/core": "4.0.0-rc.0",
     "@stencil/core": "0.16.1",
+    "@stencil/router": "^0.3.2",
     "glamor": "^2.20.40"
   },
   "devDependencies": {

@@ -1,4 +1,5 @@
 import { Component, Prop, State } from '@stencil/core';
+import '@stencil/router';
 import { Person } from './person.interface';
 import * as css from './person.styles';
 
@@ -35,35 +36,38 @@ export class PersonComponent {
   listName(name: string, consecutiveWins: number) {
     if (consecutiveWins >= 3) {
       return (
-        <div class={css.wrapper} onClick={this.toggle.bind(this)}>
+        <div class={css.wrapper}>
           <div class={css.nameColor(name, this.name)}>
             {name}
             <img src="/assets/whatshot.svg" /> x {this.person.consecutiveWins}
-          </div>
-          <div class={css.dropdown(this.expanded)}>
-            <button class={css.button}>Gottem!</button>
-            <button class={css.button}>Didn't gettem :(</button>
           </div>
         </div>
       );
     }
     return (
-      <div class={css.wrapper} onClick={this.toggle.bind(this)}>
+      <div class={css.wrapper}>
         <div class={css.nameColor(name, this.name)}>{name}</div>
-        <div class={css.dropdown(this.expanded)}>
-          <button class={css.button}>Gottem!</button>
-          <button class={css.button}>Didn't gettem :(</button>
-        </div>
       </div>
     );
   }
 
   render() {
     return (
-      <div class={css.style}>
-        <span>{this.rank}.</span>
-        {this.listName(this.person.name, this.person.consecutiveWins)}
-        <span class={css.number}>{this.person.points}</span>
+      <div onClick={this.toggle.bind(this)}>
+        <div class={css.style}>
+          <span>{this.rank}.</span>
+          {this.listName(this.person.name, this.person.consecutiveWins)}
+          <span class={css.number}>{this.person.points}</span>
+        </div>
+        <div class={css.dropdown(this.expanded)}>
+          <div>
+            <button class={css.button}>Gottem!</button>
+            <button class={css.button}>Got got :(</button>
+          </div>
+          <stencil-route-link url={`/profile/${this.person.name}`}>
+            Profile
+          </stencil-route-link>
+        </div>
       </div>
     );
   }

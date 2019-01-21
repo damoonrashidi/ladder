@@ -8,6 +8,7 @@ export const style = css({
   flex: `0 1 auto`,
   justifyContent: `space-between`,
   alignItems: `center`,
+  cursor: `pointer`,
 }).toString();
 
 export const wrapper = css({
@@ -48,7 +49,6 @@ export const button = css({
   padding: `8px 16px`,
   borderRadius: 25,
   outline: `none`,
-  cursor: `pointer`,
   margin: `8px 8px`,
   transition: `transform .2s ease-out`,
   '&:active': {
