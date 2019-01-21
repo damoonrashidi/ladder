@@ -22,6 +22,7 @@ export class AppRoot {
         <stencil-route
           url="/"
           component="rankings-page"
+          exact={true}
           componentProps={{ name: this.name }}
         />
 

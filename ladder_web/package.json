@@ -19,6 +19,7 @@
     "@ionic/core": "4.0.0-rc.0",
     "@stencil/core": "0.16.1",
     "@stencil/router": "^0.3.2",
+    "date-fns": "^2.0.0-alpha.27",
     "glamor": "^2.20.40"
   },
   "devDependencies": {
