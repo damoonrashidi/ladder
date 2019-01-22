@@ -12,7 +12,10 @@ export class RankingsPage {
       <div class={css.main}>
         <div>
           <h2 class={css.h2}>King of Pong</h2>
-          <app-rankings name={this.name} />
+          <app-rankings
+            name={this.name}
+            style={{ perspective: `1000px`, display: `block` }}
+          />
         </div>
       </div>
     );

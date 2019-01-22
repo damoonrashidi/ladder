@@ -9,6 +9,9 @@ export const style = css({
   justifyContent: `space-between`,
   alignItems: `center`,
   cursor: `pointer`,
+  fontFamily: `VT323`,
+  fontSize: 24,
+  color: `#fff`,
 }).toString();
 
 export const wrapper = css({
@@ -28,7 +31,7 @@ export const name = css({
 }).toString();
 
 export const number = css({
-  fontFamily: 'Montserrat',
+  fontFamily: 'VT323',
 }).toString();
 
 export const dropdown = (expanded: boolean) =>
@@ -45,14 +48,16 @@ export const dropdown = (expanded: boolean) =>
 export const button = css({
   background: `#41a4f4`,
   color: `#fff`,
-  border: `none`,
+  border: `2px solid #fff`,
   padding: `8px 16px`,
-  borderRadius: 25,
   outline: `none`,
   margin: `8px 8px`,
+  fontFamily: `VT323`,
+  fontSize: 18,
+  cursor: `pointer`,
   transition: `transform .2s ease-out`,
   '&:active': {
-    transform: `scaleX(1.05)`,
+    transform: `scaleX(1.05) rotateZ(90deg)`,
   },
 }).toString();
 
@@ -61,10 +66,16 @@ export const nameColor = (listName: string, me: string) =>
     display: `inline-flex`,
     alignItems: `center`,
     justifyContent: `center`,
-    color: listName === me ? '#00f' : '#000',
+    color: listName === me ? '#000' : '#fff',
     fontWeight: listName === me ? 700 : 500,
     '>img': {
       display: `inline-block`,
       marginLeft: 8,
+      filter: `saturate(0)`,
     },
   }).toString();
+
+export const profile = css({
+  color: `#000`,
+  font: `400 24px/1em 'VT323'`,
+}).toString();

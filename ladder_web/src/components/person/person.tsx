@@ -64,7 +64,10 @@ export class PersonComponent {
             <button class={css.button}>Gottem!</button>
             <button class={css.button}>Got got :(</button>
           </div>
-          <stencil-route-link url={`/profile/${this.person.name}`}>
+          <stencil-route-link
+            url={`/profile/${this.person.name}`}
+            class={css.profile}
+          >
             Profile
           </stencil-route-link>
         </div>

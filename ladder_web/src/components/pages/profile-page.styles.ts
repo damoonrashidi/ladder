@@ -13,13 +13,13 @@ export const title = css({
   position: `absolute`,
   top: 0,
   left: 0,
-  fontWeight: 800,
-  fontFamily: `Roboto`,
+  fontWeight: 400,
+  fontFamily: `VT323`,
   textTransform: `uppercase`,
   fontSize: `10vw`,
   transform: `translate(-20px, -40px)`,
   lineHeight: 1,
-  color: `#f00`,
+  color: `#fff`,
 }).toString();
 
 export const tableHeading = css({
