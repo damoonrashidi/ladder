@@ -24,6 +24,8 @@ server.sockets.on("connection", socket => {
         isBusy: message === true,
         timestamp: new Date().toTimeString()
       });
+    } else {
+      console.log("Incorrect data: ", message);
     }
   });
 });
