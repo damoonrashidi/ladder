@@ -40,7 +40,7 @@ server.sockets.on("connection", socket => {
   socket.on("available", message => {
     if (typeof message === "boolean") {
       responseSubject.next({
-        isBusy: message === true,
+        isBusy: message === false,
         timestamp: new Date().toTimeString()
       });
     } else {
