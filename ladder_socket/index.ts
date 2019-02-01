@@ -29,7 +29,7 @@ responseSubject.subscribe(response => {
 app.get("/", (_, res) => {
   res.send(
     currentValue.isBusy
-      ? `<h1>BUSY</h1>`
+      ? `<h1>BUSY</h1></br><p>since: ${currentValue.timestamp}</p>`
       : `<h1>AVAILABLE</h1></br><p>since: ${currentValue.timestamp}</p>`
   );
 });
