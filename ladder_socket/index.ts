@@ -14,15 +14,15 @@ const responseSubject = new BehaviorSubject({
   timestamp: new Date().toTimeString()
 });
 
-interface Available {
+interface Busy {
   isBusy: boolean;
   timestamp: string;
 }
 
-let currentValue: Available;
+let currentValue: Busy;
 
 responseSubject.subscribe(response => {
-  server.sockets.emit("available", response);
+  server.sockets.emit("busy", response);
   currentValue = response;
 });
 
@@ -35,9 +35,9 @@ app.get("/", (_, res) => {
 });
 
 server.sockets.on("connection", socket => {
-  socket.emit("available", currentValue);
+  socket.emit("busy", currentValue);
 
-  socket.on("available", message => {
+  socket.on("busy", message => {
     if (typeof message === "boolean") {
       responseSubject.next({
         isBusy: message,
