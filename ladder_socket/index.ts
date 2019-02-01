@@ -2,6 +2,8 @@ import io from "socket.io";
 import http from "http";
 import { BehaviorSubject } from "rxjs";
 
+const PORT = process.env.PORT || 8080;
+
 const responseSubject = new BehaviorSubject({
   isBusy: false,
   timestamp: new Date().toTimeString()
@@ -30,6 +32,6 @@ server.sockets.on("connection", socket => {
   });
 });
 
-httpServer.listen(3000, () => {
-  console.log("listening on *:3000");
+httpServer.listen(PORT, () => {
+  console.log(`listening on *: ${PORT}`);
 });
