@@ -4,11 +4,13 @@ const program = require('commander');
 const colors = require('colors/safe');
 const asciichart = require('asciichart');
 const axios = require('axios');
+const format = require('date-fns').format;
 
 const manifest = require('../package.json');
 const apiService = require('./reporter/apiService');
 const Settings = require('./settings');
 const Reporter = require('./reporter');
+const io = require('socket.io-client');
 
 // Initialize settings module, that we can use for storing settings
 const settingsManager = new Settings();
@@ -127,6 +129,18 @@ program
     console.log('Rating:', rating);
     checkForUpdates();
   });
+
+program
+  .command('table')
+  .description('Check if the table is free')
+  .action(() => {
+    const socket = io(`http://ladder-41a39.appspot.com`);
+    socket.on('busy', status => {
+      console.log(`
+        Table is currently ${status.busy ? colors.red('busy 🚫') : colors.green('free 🏓')}
+        Last update: ${status.timestamp}`);
+    })
+  })
 
 program
   .command('suggest')

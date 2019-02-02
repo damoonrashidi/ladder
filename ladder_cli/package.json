@@ -1,6 +1,6 @@
 {
   "name": "kingofpong",
-  "version": "2.5.1",
+  "version": "3.0.0",
   "description": "CLI tool for King of Pong",
   "main": "src/index.js",
   "bin": {
@@ -15,6 +15,7 @@
     "commander": "^2.19.0",
     "date-fns": "^2.0.0-alpha.27",
     "inquirer": "^6.2.1",
-    "inquirer-autocomplete-prompt": "^1.0.1"
+    "inquirer-autocomplete-prompt": "^1.0.1",
+    "socket.io-client": "^2.2.0"
   }
 }
