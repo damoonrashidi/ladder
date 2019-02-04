@@ -137,7 +137,7 @@ program
     const socket = io(`http://ladder-41a39.appspot.com`);
     socket.on('busy', response => {
       process.stdout.write('\033c');
-      const status = response.busy ? colors.red('busy 🚫') : colors.green('free 🏓');
+      const status = response.isBusy ? colors.red('busy 🚫') : colors.green('free 🏓');
       console.log(`
         Table is currently ${status}
         Last update: ${response.timestamp}`);
