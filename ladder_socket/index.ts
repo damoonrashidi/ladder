@@ -11,12 +11,12 @@ const server = io(httpServer);
 
 const responseSubject = new BehaviorSubject({
   isBusy: false,
-  timestamp: new Date().toTimeString(),
+  timestamp: new Date()
 });
 
 interface Busy {
   isBusy: boolean;
-  timestamp: string;
+  timestamp: Date;
 }
 
 let currentValue: Busy;
@@ -41,7 +41,7 @@ server.sockets.on('connection', socket => {
     if (typeof message === 'boolean') {
       responseSubject.next({
         isBusy: message,
-        timestamp: new Date().toTimeString(),
+        timestamp: new Date()
       });
     } else {
       console.log('Incorrect data: ', message);
